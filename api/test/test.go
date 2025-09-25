@@ -69,10 +69,32 @@ func TestPsqlConnection() {
 		return
 	}
 	db := psql.GetDB()
-	//db logic
-	res, err := db.Query("select * from line7;")
-	fmt.Println(err, res)
-	defer db.Close()
+	// 执行查询
+	res, err := db.Query("select * from line7 order by pk;")
+	if err != nil {
+		fmt.Printf("查询失败: %s\n", err.Error())
+		return
+	}
+	defer res.Close() // 确保结果集关闭
+	var (
+		pk           int
+		train_id     string
+		train_type   string
+		train_detail string
+	)
+	fmt.Printf("pk\ttrain_id\ttrain_type\ttrain_detail\n")
+	for res.Next() {
+		err := res.Scan(&pk, &train_id, &train_type, &train_detail)
+		if err != nil {
+			fmt.Printf("error:%s\n", err.Error())
+			return
+		}
+		fmt.Printf(
+			"%d\t%s\t\t%s\t\t%s \n",
+			pk, train_id, train_type, train_detail,
+		)
+	}
+
 }
 
 func main() {
