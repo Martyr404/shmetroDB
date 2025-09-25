@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"shmetroDB/psql"
 )
 
 // 定义请求体结构（与服务器端对应）
@@ -18,7 +19,7 @@ func RaiseDemoRequest() {
 
 	// 1. 构建请求体数据（JSON格式）
 	reqBody := DemoRequestBody{
-		Carriage_number: "080071", // 要发送的编号
+		Carriage_number: "070071", // 要发送的编号
 	}
 
 	// 2. 序列化为JSON字符串（关键：确保发送的是JSON）
@@ -61,7 +62,19 @@ func RaiseDemoRequest() {
 	fmt.Println("\n响应体:")
 	fmt.Println(string(bodyRaw))
 }
+func TestPsqlConnection() {
+	err := psql.Init()
+	if err != nil {
+		fmt.Printf("error:%s\n", err.Error())
+		return
+	}
+	db := psql.GetDB()
+	//db logic
+	res, err := db.Query("select * from line7;")
+	fmt.Println(err, res)
+	defer db.Close()
+}
 
 func main() {
-	RaiseDemoRequest()
+	TestPsqlConnection()
 }

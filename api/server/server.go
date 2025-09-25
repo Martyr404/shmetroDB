@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"shmetroDB/orm"
 
 	"github.com/gin-gonic/gin"
 )
@@ -45,10 +46,40 @@ func (s Server) Init() {
 			return
 		}
 
+		//计算车号
+		trainInfo, Err := orm.ParseCarriageNumber(req.Carriage_number)
 		// 处理成功
-		c.JSON(http.StatusOK, gin.H{
-			"msg": "you are searching number " + req.Carriage_number,
-		})
+		if Err != nil {
+			if Err.Code == "0006" {
+				c.JSON(http.StatusOK, gin.H{
+					"msg": "you are searching number " + req.Carriage_number,
+					"result": gin.H{
+						"TrainId":                    trainInfo.TrainId,
+						"Carriage_num":               trainInfo.Carriage_number,
+						"Carriage_type":              trainInfo.Carriage_type,
+						"Train_detail":               trainInfo.TrainDetail,
+						"isInputCarriageTypeCorrect": false,
+					},
+				})
+			} else {
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"code": "500",
+					"Msg":  "internal server error",
+				})
+			}
+		} else {
+			c.JSON(http.StatusOK, gin.H{
+				"msg": "you are searching number " + req.Carriage_number,
+				"result": gin.H{
+					"TrainId":                    trainInfo.TrainId,
+					"Carriage_num":               trainInfo.Carriage_number,
+					"Carriage_type":              trainInfo.Carriage_type,
+					"Train_detail":               trainInfo.TrainDetail,
+					"isInputCarriageTypeCorrect": true,
+				},
+			})
+		}
+
 	})
 
 	router.Run(":9987") // 启动服务
