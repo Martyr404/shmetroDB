@@ -38,7 +38,7 @@ func QueryInfo(train_id string) (*Train_Backend, *Error) {
 			e := &Error{Code: "0009", Msg: "SQL Query error", Verbose: err}
 			return nil, e
 		}
-		defer res.Close() // 确保结果集关闭
+		defer res.Close()
 		t := Train_Backend{}
 		//fmt.Printf("pk\ttrain_id\ttrain_type\ttrain_detail\n")
 		for res.Next() {

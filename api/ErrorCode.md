@@ -10,5 +10,3 @@ error code:
     0009: SQL Query error
     0010: Scan data from psql goes wrong
     0011: Invalid input train_id
-    0012: Reading file goes wrong
-    0013: Yaml file unmarshal goes wrong
