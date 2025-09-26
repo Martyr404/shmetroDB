@@ -81,6 +81,9 @@ func (s Server) Init() {
 		}
 
 	})
-
+	router.GET("/getMoreDetail", func(c *gin.Context) {
+		//test
+		//query database
+	})
 	router.Run(":9987") // 启动服务
 }
