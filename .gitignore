@@ -1,6 +1,8 @@
 .DS_Store
 .vscode/
 node_modules/
+gui/gui/node_modules/
+gui/.pnpm-store/
 # Logs
 logs
 *.log

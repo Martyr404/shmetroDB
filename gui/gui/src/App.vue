@@ -1,4 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+console.log('hello world')
+console.clear()
+</script>
 
 <template>
   <h1>You did it!</h1>
