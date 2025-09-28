@@ -2,7 +2,6 @@
 package main
 
 import (
-	"fmt"
 	"shmetroDB/orm"
 	"shmetroDB/psql"
 	"strconv"
@@ -58,8 +57,4 @@ func QueryInfo(train_id string) (*Train_Backend, *Error) {
 		e := &Error{Code: "0011", Msg: "Invalid input train_id"}
 		return nil, e
 	}
-}
-func main() {
-	t, _ := QueryInfo("07052")
-	fmt.Println(t)
 }
