@@ -62,6 +62,11 @@ func (s Server) Init() {
 			} else {
 				fmt.Printf("Error Code: %s\n", E.Code)
 			}
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"code": "500",
+				"Msg":  "internal server error",
+			})
+			return
 		}
 
 		// 处理成功
@@ -78,11 +83,13 @@ func (s Server) Init() {
 						"isInputCarriageTypeCorrect": false,
 					},
 				})
+				return
 			} else {
 				c.JSON(http.StatusInternalServerError, gin.H{
 					"code": "500",
 					"Msg":  "internal server error",
 				})
+				return
 			}
 		} else {
 			c.JSON(http.StatusOK, gin.H{
@@ -96,6 +103,7 @@ func (s Server) Init() {
 					"isInputCarriageTypeCorrect": true,
 				},
 			})
+			return
 		}
 
 	})
