@@ -24,7 +24,8 @@ var db *sql.DB // 全局数据库连接实例
 // 读取配置文件
 func loadConfig() (Config, error) {
 	var cfg Config
-	abs_wd, _ := os.Getwd()
+	//abs_wd, _ := os.Getwd()
+	abs_wd := "/Users/pigeonlx/Desktop/code/shmetroDB/api"
 	data, err := os.ReadFile(abs_wd + "/psql/cfg.yml")
 	if err != nil {
 		return cfg, err

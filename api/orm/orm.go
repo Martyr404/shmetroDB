@@ -6,9 +6,11 @@ import (
 )
 
 type TrainInfo struct {
+	Pk              int
 	TrainId         string
+	Train_type      string
 	Carriage_number []string
-	Carriage_type   []string
+	Carriage_index  string
 	TrainDetail     string
 }
 type Error struct {
@@ -74,10 +76,10 @@ func ParseCarriageNumber(number string) (TrainInfo, *Error) {
 				calculated_id := carriage_num_int/6 + 1
 				carriage_nums, _ := FormatCarriageNumbers(calculated_id, "07", false)
 				trainInfo := TrainInfo{
-					//若四位数车号700改7000
-					TrainId:         strconv.Itoa(700 + calculated_id),
+					//若三位数车号7000改700
+					TrainId:         "0" + strconv.Itoa(7000+calculated_id),
 					Carriage_number: carriage_nums,
-					Carriage_type:   []string{"1", "2", "3", "3", "2", "1"},
+					Carriage_index:  strconv.Itoa(carriage_num_int%6 - 1),
 				}
 				//judge carriage type is correct
 				for _, value := range carriage_nums {

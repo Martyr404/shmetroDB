@@ -3,24 +3,24 @@ import { ref } from 'vue'
 
 const searchValue = ref('')
 const loading = ref(false)
-const result = ref<string | null>(null)
+const result = ref<any | null>(null) // 支持对象
 const error = ref<string | null>(null)
 
 function validateInput(val: string) {
-  // 只允许数字，长度不超过6
-  const valid = /^[0-9]{0,6}$/.test(val)
+  // 只允许数字和TJC字母，长度不超过6
+  const valid = /^[0-9TJCtjc]{0,6}$/.test(val)
   return valid
 }
 
 function onInput(e: Event) {
   const val = (e.target as HTMLInputElement).value
-  if (validateInput(val)) {
-    searchValue.value = val
-    error.value = null
+  // 只保留数字和TJC字母，最大6位
+  const filtered = val.replace(/[^0-9TJCtjc]/g, '').slice(0, 6)
+  searchValue.value = filtered
+  if (!validateInput(filtered)) {
+    error.value = '只能输入最多6位数字或T/J/C字母，不能包含特殊字符'
   } else {
-    // 只保留前6位数字
-    searchValue.value = val.replace(/[^0-9]/g, '').slice(0, 6)
-    error.value = '只能输入最多6位数字，不能包含特殊字符'
+    error.value = null
   }
 }
 
@@ -34,8 +34,8 @@ async function handleSearch() {
   result.value = null
   loading.value = true
   try {
-    // 这里用fetch举例，实际接口地址和请求体请根据后端调整
-    const res = await fetch('/api/search', {
+    // 发送请求处
+    const res = await fetch('http://127.0.0.1:9987/api/calculate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -45,6 +45,7 @@ async function handleSearch() {
     })
     if (!res.ok) throw new Error('查询失败')
     const data = await res.json()
+    // 支持对象格式渲染
     result.value = data.result || '未查询到相关信息'
   } catch (e: any) {
     error.value = e.message || '查询出错'
@@ -75,13 +76,24 @@ async function handleSearch() {
       <span>查询结果：</span>
       <span class="result-text">
         <template v-if="loading">查询中...</template>
-        <template v-else>{{ result }}</template>
+        <template v-else>
+          <template v-if="typeof result === 'object' && result">
+            <div v-if="result.isInputCarriageTypeCorrect === false">
+              输入车厢号有误，正确应该为 {{ Array.isArray(result.Carriage_num) ? result.Carriage_num[result.Carriage_index] : result.Carriage_num }}
+            </div>
+            <div>车号：{{ result.TrainId }}</div>
+            <div>车型：{{ result.Train_type }}</div>
+            <div>关于该列车：{{ result.Train_detail || '暂无信息' }}</div>
+          </template>
+          <template v-else>
+            {{ result }}
+          </template>
+        </template>
       </span>
     </div>
     <div class="error" v-if="error">{{ error }}</div>
   </div>
 </template>
-
 <style scoped>
 .container {
   max-width: 420px;

@@ -2,8 +2,11 @@ package server
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
+	"shmetroDB/crud"
+	"shmetroDB/middleware"
 	"shmetroDB/orm"
 
 	"github.com/gin-gonic/gin"
@@ -20,9 +23,11 @@ type RequestBody struct {
 
 func (s Server) Init() {
 	router := gin.Default()
+	router.Use(middleware.CORSMiddleware())
 
-	// 推荐使用POST方法处理带请求体的请求
-	router.POST("/calculate", func(c *gin.Context) {
+	api := router.Group("/api")
+
+	api.POST("/calculate", func(c *gin.Context) {
 		// 读取请求体
 		rawBody, err := io.ReadAll(c.Request.Body)
 		if err != nil {
@@ -48,6 +53,17 @@ func (s Server) Init() {
 
 		//计算车号
 		trainInfo, Err := orm.ParseCarriageNumber(req.Carriage_number)
+		//查询车号详情
+		fmt.Println(trainInfo)
+		E := crud.QueryInfo(trainInfo.TrainId, &trainInfo)
+		if E != nil {
+			if E.Verbose != nil {
+				fmt.Printf("Error Code: %s, Verbose: %s\n", E.Code, E.Verbose.Error())
+			} else {
+				fmt.Printf("Error Code: %s\n", E.Code)
+			}
+		}
+
 		// 处理成功
 		if Err != nil {
 			if Err.Code == "0006" {
@@ -56,7 +72,8 @@ func (s Server) Init() {
 					"result": gin.H{
 						"TrainId":                    trainInfo.TrainId,
 						"Carriage_num":               trainInfo.Carriage_number,
-						"Carriage_type":              trainInfo.Carriage_type,
+						"Carriage_index":             trainInfo.Carriage_index,
+						"Train_type":                 trainInfo.Train_type,
 						"Train_detail":               trainInfo.TrainDetail,
 						"isInputCarriageTypeCorrect": false,
 					},
@@ -73,17 +90,14 @@ func (s Server) Init() {
 				"result": gin.H{
 					"TrainId":                    trainInfo.TrainId,
 					"Carriage_num":               trainInfo.Carriage_number,
-					"Carriage_type":              trainInfo.Carriage_type,
+					"Carriage_index":             trainInfo.Carriage_index,
+					"Train_type":                 trainInfo.Train_type,
 					"Train_detail":               trainInfo.TrainDetail,
 					"isInputCarriageTypeCorrect": true,
 				},
 			})
 		}
 
-	})
-	router.GET("/getMoreDetail", func(c *gin.Context) {
-		//test
-		//query database
 	})
 	router.Run(":9987") // 启动服务
 }
