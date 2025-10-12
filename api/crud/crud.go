@@ -1,7 +1,6 @@
 package crud
 
 import (
-	"fmt"
 	"shmetroDB/orm"
 	"shmetroDB/psql"
 	"strconv"
@@ -16,7 +15,6 @@ func QueryInfo(train_id string, t *TrainInfo) *Error {
 		line_int_tmp, _ := strconv.Atoi(line)
 		line_pop_zero := strconv.Itoa(line_int_tmp)
 		sql := "select * from line" + line_pop_zero + " where pk=" + PopFrontZero(pk)
-		fmt.Println(sql)
 
 		err := psql.Init()
 		if err != nil {

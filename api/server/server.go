@@ -53,8 +53,9 @@ func (s Server) Init() {
 
 		//计算车号
 		trainInfo, Err := orm.ParseCarriageNumber(req.Carriage_number)
-		//查询车号详情
 		fmt.Println(trainInfo)
+		//查询车号详情
+		//注意可能出现数据库不存在对应列车信息情况
 		E := crud.QueryInfo(trainInfo.TrainId, &trainInfo)
 		if E != nil {
 			if E.Verbose != nil {
