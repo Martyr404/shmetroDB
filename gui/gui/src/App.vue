@@ -8,7 +8,7 @@ const error = ref<string | null>(null)
 
 function validateInput(val: string) {
   // 只允许数字和TJC字母，长度不超过6
-  const valid = /^[0-9TJCtjc]{0,6}$/.test(val)
+  const valid = /^[0-9TJCYtjcy]{0,6}$/.test(val)
   return valid
 }
 

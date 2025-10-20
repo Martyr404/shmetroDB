@@ -45,15 +45,20 @@ func (s Server) Init() {
 			return
 		}
 
-		// 验证参数
+		// 验证参数是否为空
 		if req.Carriage_number == "" {
 			c.JSON(http.StatusBadRequest, gin.H{"msg": "missing carriage_number"})
+			return
+		}
+		// 验证车厢号是否合法
+		if !orm.ValidateCarriageNumbers(req.Carriage_number) {
+			c.JSON(http.StatusBadRequest, gin.H{"msg": "invalid carriage_number"})
 			return
 		}
 
 		//计算车号
 		trainInfo, Err := orm.ParseCarriageNumber(req.Carriage_number)
-		fmt.Println(trainInfo)
+		//fmt.Println(trainInfo)
 		//查询车号详情
 		//注意可能出现数据库不存在对应列车信息情况
 		E := crud.QueryInfo(trainInfo.TrainId, &trainInfo)
