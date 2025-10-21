@@ -355,6 +355,7 @@ func ParseCarriageNumber(number string) (TrainInfo, *Error) {
 						}
 					}
 				}
+				return TrainInfo{}, &Error{Code: "0012", Msg: "Unexpected field reached"}
 			}
 		case "07":
 			{
@@ -1004,6 +1005,7 @@ func ParseCarriageNumber(number string) (TrainInfo, *Error) {
 	} else {
 		return TrainInfo{}, &Error{Code: "0005", Msg: "Invalid carriage number"}
 	}
+
 }
 
 // 根据车号生成车厢号
