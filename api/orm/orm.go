@@ -96,10 +96,265 @@ func ParseCarriageNumber(number string) (TrainInfo, *Error) {
 			}
 		case "06":
 			{
-				//line 6 logic
-				trainInfo := TrainInfo{}
-				e := &Error{Msg: "to be realized"}
-				return trainInfo, e
+				//line6 logic
+				carriage_num_int, err := strconv.Atoi(carriage_num)
+				if err != nil {
+					return TrainInfo{}, &Error{Code: "0003", Msg: "Invalid carriage number."}
+				}
+				switch {
+				case carriage_num_int >= 1 && carriage_num_int <= 12:
+					{
+						//能够整除逻辑
+						if carriage_num_int%4 == 0 {
+							calculated_id := carriage_num_int / 4
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "06", false)
+							trainInfo := TrainInfo{
+								TrainId:         "0" + strconv.Itoa(6000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  "3",
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return trainInfo, nil
+								}
+							}
+							return trainInfo, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						} else {
+							//不能整除逻辑
+							calculated_id := carriage_num_int/4 + 1
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "06", false)
+							trainInfo := TrainInfo{
+								TrainId:         "0" + strconv.Itoa(6000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  strconv.Itoa(carriage_num_int%4 - 1),
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return trainInfo, nil
+								}
+							}
+							return trainInfo, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						}
+					}
+				case carriage_num_int >= 13 && carriage_num_int <= 48:
+					{
+						//能够整除逻辑
+						if carriage_num_int%4 == 0 {
+							calculated_id := carriage_num_int/4 + 1
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "06", false)
+							trainInfo := TrainInfo{
+								TrainId:         "0" + strconv.Itoa(6000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  "3",
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return trainInfo, nil
+								}
+							}
+							return trainInfo, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						} else {
+							//不能整除逻辑
+							calculated_id := carriage_num_int/4 + 2
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "06", false)
+							trainInfo := TrainInfo{
+								TrainId:         "0" + strconv.Itoa(6000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  strconv.Itoa(carriage_num_int%4 - 1),
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return trainInfo, nil
+								}
+							}
+							return trainInfo, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						}
+					}
+				case carriage_num_int >= 49 && carriage_num_int <= 84:
+					{
+						//能够整除逻辑
+						if carriage_num_int%4 == 0 {
+							calculated_id := carriage_num_int/4 + 2
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "06", false)
+							trainInfo := TrainInfo{
+								TrainId:         "0" + strconv.Itoa(6000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  "3",
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return trainInfo, nil
+								}
+							}
+							return trainInfo, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						} else {
+							//不能整除逻辑
+							calculated_id := carriage_num_int/4 + 3
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "06", false)
+							trainInfo := TrainInfo{
+								TrainId:         "0" + strconv.Itoa(6000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  strconv.Itoa(carriage_num_int%4 - 1),
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return trainInfo, nil
+								}
+							}
+							return trainInfo, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						}
+					}
+				case carriage_num_int >= 85 && carriage_num_int <= 120:
+					{
+						//能够整除逻辑
+						if carriage_num_int%4 == 0 {
+							calculated_id := carriage_num_int/4 + 3
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "06", false)
+							trainInfo := TrainInfo{
+								TrainId:         "0" + strconv.Itoa(6000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  "3",
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return trainInfo, nil
+								}
+							}
+							return trainInfo, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						} else {
+							//不能整除逻辑
+							calculated_id := carriage_num_int/4 + 4
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "06", false)
+							trainInfo := TrainInfo{
+								TrainId:         "0" + strconv.Itoa(6000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  strconv.Itoa(carriage_num_int%4 - 1),
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return trainInfo, nil
+								}
+							}
+							return trainInfo, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						}
+					}
+				case carriage_num_int >= 121 && carriage_num_int <= 156:
+					{
+						//能够整除逻辑
+						if carriage_num_int%4 == 0 {
+							calculated_id := carriage_num_int/4 + 4
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "06", false)
+							trainInfo := TrainInfo{
+								TrainId:         "0" + strconv.Itoa(6000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  "3",
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return trainInfo, nil
+								}
+							}
+							return trainInfo, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						} else {
+							//不能整除逻辑
+							calculated_id := carriage_num_int/4 + 5
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "06", false)
+							trainInfo := TrainInfo{
+								TrainId:         "0" + strconv.Itoa(6000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  strconv.Itoa(carriage_num_int%4 - 1),
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return trainInfo, nil
+								}
+							}
+							return trainInfo, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						}
+					}
+				case carriage_num_int >= 157 && carriage_num_int <= 192:
+					{
+						//能够整除逻辑
+						if carriage_num_int%4 == 0 {
+							calculated_id := carriage_num_int/4 + 5
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "06", false)
+							trainInfo := TrainInfo{
+								TrainId:         "0" + strconv.Itoa(6000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  "3",
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return trainInfo, nil
+								}
+							}
+							return trainInfo, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						} else {
+							//不能整除逻辑
+							calculated_id := carriage_num_int/4 + 6
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "06", false)
+							trainInfo := TrainInfo{
+								TrainId:         "0" + strconv.Itoa(6000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  strconv.Itoa(carriage_num_int%4 - 1),
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return trainInfo, nil
+								}
+							}
+							return trainInfo, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						}
+					}
+				case carriage_num_int >= 193:
+					{
+						//能够整除逻辑
+						if carriage_num_int%4 == 0 {
+							calculated_id := carriage_num_int/4 + 6
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "06", false)
+							trainInfo := TrainInfo{
+								TrainId:         "0" + strconv.Itoa(6000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  "3",
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return trainInfo, nil
+								}
+							}
+							return trainInfo, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						} else {
+							//不能整除逻辑
+							calculated_id := carriage_num_int/4 + 7
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "06", false)
+							trainInfo := TrainInfo{
+								TrainId:         "0" + strconv.Itoa(6000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  strconv.Itoa(carriage_num_int%4 - 1),
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return trainInfo, nil
+								}
+							}
+							return trainInfo, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						}
+					}
+				}
 			}
 		case "07":
 			{
@@ -757,7 +1012,107 @@ func FormatCarriageNumbers(id int, line string, isAnda bool) ([]string, error) {
 		switch line {
 		case "06":
 			{
-				//line6
+				//line6 logic
+				switch {
+				case (id >= 1 && id <= 3):
+					{
+						num := []int{4*id - 3, 4*id - 2, 4*id - 1, 4 * id}
+						template := []string{"1", "2", "2", "1"}
+						res := []string{}
+						for i := 0; i < 4; i++ {
+							num_str := strconv.Itoa(num[i])
+							for len(num_str) < 3 {
+								num_str = "0" + num_str
+							}
+							res = append(res, line+num_str+template[i])
+						}
+						return res, nil
+					}
+				case (id >= 5 && id <= 13):
+					{
+						num := []int{4*id - 7, 4*id - 6, 4*id - 5, 4*id - 4}
+						template := []string{"1", "2", "2", "1"}
+						res := []string{}
+						for i := 0; i < 4; i++ {
+							num_str := strconv.Itoa(num[i])
+							for len(num_str) < 3 {
+								num_str = "0" + num_str
+							}
+							res = append(res, line+num_str+template[i])
+						}
+						return res, nil
+					}
+				case (id >= 15 && id <= 23):
+					{
+						num := []int{4*id - 11, 4*id - 10, 4*id - 9, 4*id - 8}
+						template := []string{"1", "2", "2", "1"}
+						res := []string{}
+						for i := 0; i < 4; i++ {
+							num_str := strconv.Itoa(num[i])
+							for len(num_str) < 3 {
+								num_str = "0" + num_str
+							}
+							res = append(res, line+num_str+template[i])
+						}
+						return res, nil
+					}
+				case (id >= 25 && id <= 33):
+					{
+						num := []int{4*id - 15, 4*id - 14, 4*id - 13, 4*id - 12}
+						template := []string{"1", "2", "2", "1"}
+						res := []string{}
+						for i := 0; i < 4; i++ {
+							num_str := strconv.Itoa(num[i])
+							for len(num_str) < 3 {
+								num_str = "0" + num_str
+							}
+							res = append(res, line+num_str+template[i])
+						}
+						return res, nil
+					}
+				case (id >= 35 && id <= 43):
+					{
+						num := []int{4*id - 19, 4*id - 18, 4*id - 17, 4*id - 16}
+						template := []string{"1", "2", "2", "1"}
+						res := []string{}
+						for i := 0; i < 4; i++ {
+							num_str := strconv.Itoa(num[i])
+							for len(num_str) < 3 {
+								num_str = "0" + num_str
+							}
+							res = append(res, line+num_str+template[i])
+						}
+						return res, nil
+					}
+				case (id >= 45 && id <= 53):
+					{
+						num := []int{4*id - 23, 4*id - 22, 4*id - 21, 4*id - 20}
+						template := []string{"1", "2", "2", "1"}
+						res := []string{}
+						for i := 0; i < 4; i++ {
+							num_str := strconv.Itoa(num[i])
+							for len(num_str) < 3 {
+								num_str = "0" + num_str
+							}
+							res = append(res, line+num_str+template[i])
+						}
+						return res, nil
+					}
+				case (id >= 55):
+					{
+						num := []int{4*id - 27, 4*id - 26, 4*id - 25, 4*id - 24}
+						template := []string{"1", "2", "2", "1"}
+						res := []string{}
+						for i := 0; i < 4; i++ {
+							num_str := strconv.Itoa(num[i])
+							for len(num_str) < 3 {
+								num_str = "0" + num_str
+							}
+							res = append(res, line+num_str+template[i])
+						}
+						return res, nil
+					}
+				}
 				res := []string{}
 				return res, nil
 			}
