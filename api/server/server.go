@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"shmetroDB/crud"
 	"shmetroDB/middleware"
 	"shmetroDB/orm"
 
@@ -61,7 +60,7 @@ func (s Server) Init() {
 		//fmt.Println(trainInfo)
 		//查询车号详情
 		//注意可能出现数据库不存在对应列车信息情况
-		E := crud.QueryInfo(trainInfo.TrainId, &trainInfo)
+		E := orm.QueryInfo(trainInfo.TrainId, &trainInfo)
 		if E != nil {
 			if E.Verbose != nil {
 				fmt.Printf("Error Code: %s, Verbose: %s\n", E.Code, E.Verbose.Error())

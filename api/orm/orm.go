@@ -3,7 +3,9 @@ package orm
 import (
 	"fmt"
 	"regexp"
+	"shmetroDB/psql"
 	"strconv"
+	"strings"
 )
 
 type TrainInfo struct {
@@ -89,10 +91,64 @@ func ParseCarriageNumber(number string) (TrainInfo, *Error) {
 			}
 		case "05":
 			{
-				//line 5 logic
-				trainInfo := TrainInfo{}
-				e := &Error{Msg: "to be realized"}
-				return trainInfo, e
+				//line5 logic
+				//6位数情况
+				carriage_num_int, err := strconv.Atoi(carriage_num)
+				if err != nil {
+					return TrainInfo{}, &Error{Code: "0003", Msg: "Invalid carriage number."}
+				}
+				if carriage_num_int >= 69 && carriage_num_int <= 266 {
+					//6节车逻辑
+					if (carriage_num_int-68)%6 == 0 {
+						calculated_id := (carriage_num_int - 68) / 6
+						carriage_nums, _ := FormatCarriageNumbers(calculated_id, "05", false)
+						trainInfo := TrainInfo{
+							//若三位数车号7000改700
+							TrainId:         "05" + strconv.Itoa(5000+calculated_id),
+							Carriage_number: carriage_nums,
+							Carriage_index:  "5",
+						}
+						//judge carriage type is correct
+						for _, value := range carriage_nums {
+							if number == value {
+								return trainInfo, nil
+							}
+						}
+						return trainInfo, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					} else {
+						calculated_id := (carriage_num_int-68)/6 + 1
+						carriage_nums, _ := FormatCarriageNumbers(calculated_id, "05", false)
+						trainInfo := TrainInfo{
+							//若三位数车号9000改900
+							TrainId:         "0" + strconv.Itoa(5000+calculated_id),
+							Carriage_number: carriage_nums,
+							Carriage_index:  strconv.Itoa(carriage_num_int%6 - 1),
+						}
+						//judge carriage type is correct
+						for _, value := range carriage_nums {
+							if number == value {
+								return trainInfo, nil
+							}
+						}
+						return trainInfo, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					}
+				} else {
+					//4节车逻辑
+					trainInfo := TrainInfo{}
+					E := QueryCarriage("5", number, &trainInfo)
+					if E != nil {
+						return trainInfo, E
+					}
+					//待完善
+					carriage_nums := trainInfo.Carriage_number
+					//judge carriage type is correct
+					for _, value := range carriage_nums {
+						if number == value {
+							return trainInfo, nil
+						}
+					}
+					return trainInfo, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+				}
 			}
 		case "06":
 			{
@@ -1009,9 +1065,38 @@ func ParseCarriageNumber(number string) (TrainInfo, *Error) {
 }
 
 // 根据车号生成车厢号
-func FormatCarriageNumbers(id int, line string, isAnda bool) ([]string, error) {
+func FormatCarriageNumbers(id int, line string, isAnda bool) ([]string, *Error) {
 	if id > 0 {
 		switch line {
+		case "05":
+			{
+				switch {
+				case (id >= 1 && id <= 18):
+					//pass
+
+					return []string{}, nil
+
+				case (id >= 19):
+					{
+						num := []int{6*(id-18) + 63, 6*(id-18) + 64, 6*(id-18) + 65, 6*(id-18) + 66, 6*(id-18) + 67, 6*(id-18) + 68}
+						template := []string{"1", "2", "3", "3", "2", "1"}
+						res := []string{}
+						for i := 0; i < 6; i++ {
+							num_str := strconv.Itoa(num[i])
+							for len(num_str) < 3 {
+								num_str = "0" + num_str
+							}
+							res = append(res, line+num_str+template[i])
+						}
+						return res, nil
+					}
+				default:
+					{
+						E := &Error{Code: "0013", Msg: "Unexpected field reached"}
+						return []string{}, E
+					}
+				}
+			}
 		case "06":
 			{
 				//line6 logic
@@ -1201,13 +1286,13 @@ func FormatCarriageNumbers(id int, line string, isAnda bool) ([]string, error) {
 				default:
 					{
 						res := []string{}
-						return res, fmt.Errorf("invald isAnda flag , error code : 0007")
+						return res, &Error{Code: "0007", Msg: "invald isAnda flag"}
 					}
 				}
 			}
 		}
 	} else {
-		return nil, fmt.Errorf("invalid train id , error code : 0004")
+		return nil, &Error{Code: "0007", Msg: "invalid train id"}
 	}
 }
 
@@ -1216,4 +1301,69 @@ func ValidateCarriageNumbers(number string) bool {
 	pattern := `(?i)^(?:\d{5}|\d{6}|T\d{6}|JC\d{5}|JY\d{6})$`
 	matched, _ := regexp.MatchString(pattern, number)
 	return matched
+}
+func QueryInfo(train_id string, t *TrainInfo) *Error {
+	if len(train_id) == 5 {
+		line, _ := train_id[:2], train_id[2:]
+		line_int_tmp, _ := strconv.Atoi(line)
+		line_pop_zero := strconv.Itoa(line_int_tmp)
+		sql := "select * from line" + line_pop_zero + " where train_id='" + train_id + "'"
+
+		err := psql.Init()
+		if err != nil {
+			e := &Error{Code: "0008", Msg: "PostgreSQL initialize error", Verbose: err}
+			return e
+		}
+		db := psql.GetDB()
+		// 执行查询
+		res, err := db.Query(sql)
+		if err != nil {
+			e := &Error{Code: "0009", Msg: "SQL Query error", Verbose: err}
+			return e
+		}
+		defer res.Close()
+		defer db.Close()
+		//fmt.Printf("pk\ttrain_id\ttrain_type\ttrain_detail\n")
+		for res.Next() {
+			err := res.Scan(&t.Pk, &t.TrainId, &t.Train_type, &t.TrainDetail)
+			if err != nil {
+				e := &Error{Code: "0010", Msg: "Scan data from psql goes wrong", Verbose: err}
+				return e
+			}
+		}
+		return nil
+	} else {
+		e := &Error{Code: "0011", Msg: "Invalid input train_id"}
+		return e
+	}
+}
+func QueryCarriage(line string, number string, t *TrainInfo) *Error {
+	sql := "select * from \"line" + line + "-carriages<->trains\" where left(carriage_number,length(carriage_number)-1)=left('" + number + "',length('" + number + "')-1)"
+	fmt.Println(sql)
+	err := psql.Init()
+	if err != nil {
+		e := &Error{Code: "0015", Msg: "PostgreSQL initialize error", Verbose: err}
+		return e
+	}
+	db := psql.GetDB()
+	// 执行查询
+	res, err := db.Query(sql)
+	if err != nil {
+		e := &Error{Code: "0016", Msg: "SQL Query error", Verbose: err}
+		return e
+	}
+	defer res.Close()
+	defer db.Close()
+
+	for res.Next() {
+		all_carriage := ""
+		correct_carriage := ""
+		err := res.Scan(&correct_carriage, &t.TrainId, &t.Carriage_index, &all_carriage)
+		t.Carriage_number = strings.Split(all_carriage, ",")
+		if err != nil {
+			e := &Error{Code: "0017", Msg: "Scan data from psql goes wrong", Verbose: err}
+			return e
+		}
+	}
+	return nil
 }
