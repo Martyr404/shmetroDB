@@ -15,6 +15,7 @@ type TrainInfo struct {
 	Carriage_number []string
 	Carriage_index  string
 	TrainDetail     string
+	IsEmpty         bool
 }
 type Error struct {
 	Code    string

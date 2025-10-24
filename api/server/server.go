@@ -60,16 +60,31 @@ func (s Server) Init() {
 		//fmt.Println(trainInfo)
 		//查询车号详情
 		//注意可能出现数据库不存在对应列车信息情况
-		E := orm.QueryInfo(trainInfo.TrainId, &trainInfo)
-		if E != nil {
-			if E.Verbose != nil {
-				fmt.Printf("Error Code: %s, Verbose: %s\n", E.Code, E.Verbose.Error())
-			} else {
-				fmt.Printf("Error Code: %s\n", E.Code)
+		if trainInfo.TrainId != "" {
+			E := orm.QueryInfo(trainInfo.TrainId, &trainInfo)
+			if E != nil {
+				if E.Verbose != nil {
+					fmt.Printf("Error Code: %s, Verbose: %s\n", E.Code, E.Verbose.Error())
+				} else {
+					fmt.Printf("Error Code: %s\n", E.Code)
+				}
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"code": "500",
+					"Msg":  "internal server error",
+				})
+				return
 			}
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"code": "500",
-				"Msg":  "internal server error",
+		} else {
+			c.JSON(http.StatusOK, gin.H{
+				"msg": "you are searching number " + req.Carriage_number,
+				"result": gin.H{
+					"TrainId":                    trainInfo.TrainId,
+					"Carriage_num":               trainInfo.Carriage_number,
+					"Carriage_index":             trainInfo.Carriage_index,
+					"Train_type":                 trainInfo.Train_type,
+					"Train_detail":               trainInfo.TrainDetail,
+					"isInputCarriageTypeCorrect": true,
+				},
 			})
 			return
 		}
