@@ -30,23 +30,306 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 		case "01":
 			{
 				//line 1 logic
-				trainInfo := TrainInfo{IsEmpty: true}
-				e := &Error{Msg: "to be realized"}
-				return []TrainInfo{trainInfo}, e
+				carriage_num_int, err := strconv.Atoi(carriage_num)
+				if err != nil {
+					return []TrainInfo{{IsEmpty: true}}, &Error{Code: "0020", Msg: "Invalid carriage number."}
+				}
+				switch {
+				case (carriage_num_int >= 235 && carriage_num_int <= 362):
+					{
+						if (carriage_num_int-234)%8 == 0 {
+							calculated_id := (carriage_num_int-234)/8 + 39
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "01", false)
+							trainInfo := TrainInfo{
+								//若三位数车号7000改700
+								IsEmpty:         false,
+								TrainId:         "0" + strconv.Itoa(1000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  "7",
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return []TrainInfo{trainInfo}, nil
+								}
+							}
+							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						} else {
+							calculated_id := (carriage_num_int-234)/8 + 40
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "01", false)
+							trainInfo := TrainInfo{
+								//若三位数车号7000改700
+								IsEmpty:         false,
+								TrainId:         "0" + strconv.Itoa(1000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  strconv.Itoa((carriage_num_int-234)%8 - 1),
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return []TrainInfo{trainInfo}, nil
+								}
+							}
+							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						}
+					}
+				case (carriage_num_int >= 468 && carriage_num_int <= 715):
+					{
+						if (carriage_num_int-467)%8 == 0 {
+							calculated_id := (carriage_num_int-467)/8 + 55
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "01", false)
+							trainInfo := TrainInfo{
+								//若三位数车号7000改700
+								IsEmpty:         false,
+								TrainId:         "0" + strconv.Itoa(1000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  "7",
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return []TrainInfo{trainInfo}, nil
+								}
+							}
+							return []TrainInfo{trainInfo}, &Error{Code: "0021", Msg: "Incorrect carriage type."}
+						} else {
+							calculated_id := (carriage_num_int-467)/8 + 55
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "01", false)
+							trainInfo := TrainInfo{
+								//若三位数车号7000改700
+								IsEmpty:         false,
+								TrainId:         "0" + strconv.Itoa(1000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  strconv.Itoa((carriage_num_int-467)%8 - 1),
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return []TrainInfo{trainInfo}, nil
+								}
+							}
+							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						}
+					}
+				default:
+					//
+					//QueryCarriage()
+					return
+				}
 			}
 		case "02":
 			{
 				//line 2 logic
-				trainInfo := TrainInfo{IsEmpty: true}
-				e := &Error{Msg: "to be realized"}
-				return []TrainInfo{trainInfo}, e
+				carriage_num_int, err := strconv.Atoi(carriage_num)
+				if err != nil {
+					return []TrainInfo{{IsEmpty: true}}, &Error{Code: "0003", Msg: "Invalid carriage number."}
+				}
+				switch {
+				case (carriage_num_int >= 129 && carriage_num_int <= 424):
+					{
+						//line 2 logic
+						if carriage_num_int%8 == 0 {
+							calculated_id := carriage_num_int/8 + 16
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "02", false)
+							trainInfo := TrainInfo{
+								//若三位数车号7000改700
+								IsEmpty:         false,
+								TrainId:         "0" + strconv.Itoa(2000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  "7",
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return []TrainInfo{trainInfo}, nil
+								}
+							}
+							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						} else {
+							calculated_id := carriage_num_int/8 + 17
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "02", false)
+							trainInfo := TrainInfo{
+								//若三位数车号7000改700
+								IsEmpty:         false,
+								TrainId:         "0" + strconv.Itoa(2000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  strconv.Itoa(carriage_num_int%8 - 1),
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return []TrainInfo{trainInfo}, nil
+								}
+							}
+							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						}
+
+					}
+				case (carriage_num_int >= 425 && carriage_num_int <= 488):
+					{
+						//line 2 logic
+						if carriage_num_int%4 == 0 {
+							calculated_id := carriage_num_int/4 - 37
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "02", false)
+							trainInfo := TrainInfo{
+								//若三位数车号7000改700
+								IsEmpty:         false,
+								TrainId:         "0" + strconv.Itoa(2000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  "7",
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return []TrainInfo{trainInfo}, nil
+								}
+							}
+							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						} else {
+							calculated_id := carriage_num_int/4 - 36
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "02", false)
+							trainInfo := TrainInfo{
+								//若三位数车号7000改700
+								IsEmpty:         false,
+								TrainId:         "0" + strconv.Itoa(2000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  strconv.Itoa(carriage_num_int%4 - 1),
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return []TrainInfo{trainInfo}, nil
+								}
+							}
+							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						}
+					}
+				case (carriage_num_int >= 489 && carriage_num_int <= 552):
+					{
+						//line 2 logic
+						if carriage_num_int%4 == 0 {
+							calculated_id := carriage_num_int/4 - 53
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "02", false)
+							trainInfo := TrainInfo{
+								//若三位数车号7000改700
+								IsEmpty:         false,
+								TrainId:         "0" + strconv.Itoa(2000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  "6",
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return []TrainInfo{trainInfo}, nil
+								}
+							}
+							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						} else {
+							calculated_id := carriage_num_int/4 - 52
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "02", false)
+							trainInfo := TrainInfo{
+								//若三位数车号7000改700
+								IsEmpty:         false,
+								TrainId:         "0" + strconv.Itoa(2000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  strconv.Itoa(carriage_num_int%4 + 3),
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return []TrainInfo{trainInfo}, nil
+								}
+							}
+							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						}
+					}
+				case (carriage_num_int <= 553 && carriage_num_int <= 800):
+					{
+						//line 2 logic
+						if carriage_num_int%8 == 0 {
+							calculated_id := carriage_num_int/8 + 16
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "02", false)
+							trainInfo := TrainInfo{
+								//若三位数车号7000改700
+								IsEmpty:         false,
+								TrainId:         "0" + strconv.Itoa(2000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  "7",
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return []TrainInfo{trainInfo}, nil
+								}
+							}
+							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						} else {
+							calculated_id := carriage_num_int/8 + 17
+							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "02", false)
+							trainInfo := TrainInfo{
+								//若三位数车号7000改700
+								IsEmpty:         false,
+								TrainId:         "0" + strconv.Itoa(2000+calculated_id),
+								Carriage_number: carriage_nums,
+								Carriage_index:  strconv.Itoa(carriage_num_int%8 - 1),
+							}
+							//judge carriage type is correct
+							for _, value := range carriage_nums {
+								if number == value {
+									return []TrainInfo{trainInfo}, nil
+								}
+							}
+							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						}
+					}
+				default:
+					{
+						return []TrainInfo{{IsEmpty: true}}, &Error{Code: "0018", Msg: "Invalid carriage number."}
+					}
+				}
 			}
 		case "03":
 			{
-				//line 3 logic
-				trainInfo := TrainInfo{IsEmpty: true}
-				e := &Error{Msg: "to be realized"}
-				return []TrainInfo{trainInfo}, e
+				//line3 logic
+				carriage_num_int, err := strconv.Atoi(carriage_num)
+				if err != nil {
+					return []TrainInfo{{IsEmpty: true}}, &Error{Code: "0003", Msg: "Invalid carriage number."}
+				}
+				if carriage_num_int%6 == 0 {
+					calculated_id := carriage_num_int / 6
+					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "03", false)
+					trainInfo := TrainInfo{
+						//若三位数车号7000改700
+						IsEmpty:         false,
+						TrainId:         "0" + strconv.Itoa(3000+calculated_id),
+						Carriage_number: carriage_nums,
+						Carriage_index:  "5",
+					}
+					//judge carriage type is correct
+					for _, value := range carriage_nums {
+						if number == value {
+							return []TrainInfo{trainInfo}, nil
+						}
+					}
+					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+				} else {
+					calculated_id := carriage_num_int/6 + 1
+					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "03", false)
+					trainInfo := TrainInfo{
+						//若三位数车号9000改900
+						IsEmpty:         false,
+						TrainId:         "0" + strconv.Itoa(3000+calculated_id),
+						Carriage_number: carriage_nums,
+						Carriage_index:  strconv.Itoa(carriage_num_int%6 - 1),
+					}
+					//judge carriage type is correct
+					for _, value := range carriage_nums {
+						if number == value {
+							return []TrainInfo{trainInfo}, nil
+						}
+					}
+					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+				}
 			}
 		case "04":
 			{
@@ -58,10 +341,16 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 				if carriage_num_int%6 == 0 {
 					calculated_id := carriage_num_int / 6
 					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "04", false)
+					tid := ""
+					if calculated_id >= 37 && calculated_id <= 49 {
+						tid = "0" + strconv.Itoa(3000+calculated_id)
+					} else {
+						tid = "0" + strconv.Itoa(4000+calculated_id)
+					}
 					trainInfo := TrainInfo{
 						//若三位数车号7000改700
 						IsEmpty:         false,
-						TrainId:         "0" + strconv.Itoa(4000+calculated_id),
+						TrainId:         tid,
 						Carriage_number: carriage_nums,
 						Carriage_index:  "5",
 					}
@@ -75,10 +364,16 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 				} else {
 					calculated_id := carriage_num_int/6 + 1
 					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "04", false)
+					tid := ""
+					if calculated_id >= 37 && calculated_id <= 49 {
+						tid = "0" + strconv.Itoa(3000+calculated_id)
+					} else {
+						tid = "0" + strconv.Itoa(4000+calculated_id)
+					}
 					trainInfo := TrainInfo{
-						//若三位数车号9000改900
+						//若三位数车号7000改700
 						IsEmpty:         false,
-						TrainId:         "0" + strconv.Itoa(4000+calculated_id),
+						TrainId:         tid,
 						Carriage_number: carriage_nums,
 						Carriage_index:  strconv.Itoa(carriage_num_int%6 - 1),
 					}
@@ -126,7 +421,7 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							IsEmpty:         false,
 							TrainId:         "0" + strconv.Itoa(5000+calculated_id),
 							Carriage_number: carriage_nums,
-							Carriage_index:  strconv.Itoa(carriage_num_int%6 - 1),
+							Carriage_index:  strconv.Itoa((carriage_num_int-68)%6 - 1),
 						}
 						//judge carriage type is correct
 						for _, value := range carriage_nums {
@@ -552,7 +847,7 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							IsEmpty:         false,
 							TrainId:         "0" + strconv.Itoa(8000+calculated_id),
 							Carriage_number: carriage_nums,
-							Carriage_index:  strconv.Itoa(carriage_num_int%7 - 1),
+							Carriage_index:  strconv.Itoa((carriage_num_int-168)%7 - 1),
 						}
 						//judge carriage type is correct
 						for _, value := range carriage_nums {
@@ -931,7 +1226,7 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							IsEmpty:         false,
 							TrainId:         strconv.Itoa(16000 + calculated_id),
 							Carriage_number: carriage_nums,
-							Carriage_index:  strconv.Itoa(carriage_num_int%6 - 1),
+							Carriage_index:  strconv.Itoa((carriage_num_int-138)%6 - 1),
 						}
 						//judge carriage type is correct
 						for _, value := range carriage_nums {
@@ -1121,6 +1416,76 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 func FormatCarriageNumbers(id int, line string, isAnda bool) ([]string, *Error) {
 	if id > 0 {
 		switch line {
+		case "01":
+			{
+				switch {
+				case (id >= 40 && id <= 55):
+					{
+						num := []int{8*(id-39) + 227, 8*(id-39) + 228, 8*(id-39) + 229, 8*(id-39) + 230, 8*(id-39) + 231, 8*(id-39) + 232, 8*(id-39) + 233, 8*(id-39) + 234}
+						template := []string{"1", "2", "3", "2", "3", "3", "2", "1"}
+						res := []string{}
+						for i := 0; i < 8; i++ {
+							res[i] = line + strconv.Itoa(num[i]) + template[i]
+						}
+						return res, nil
+					}
+				case (id >= 56 && id <= 86):
+					{
+						num := []int{8*(id-55) + 460, 8*(id-55) + 461, 8*(id-55) + 462, 8*(id-55) + 463, 8*(id-55) + 464, 8*(id-55) + 465, 8*(id-55) + 466, 8*(id-55) + 467}
+						template := []string{"1", "2", "3", "2", "3", "3", "2", "1"}
+						res := []string{}
+						for i := 0; i < 8; i++ {
+							res[i] = line + strconv.Itoa(num[i]) + template[i]
+						}
+						return res, nil
+					}
+				default:
+					{
+						E := &Error{Code: "0022", Msg: "Unexpected field reached"}
+						return []string{}, E
+					}
+				}
+			}
+		case "02":
+			{
+				switch {
+				case (id >= 33 && id <= 69):
+					{
+						num := []int{8*(id-16) - 7, 8*(id-16) - 6, 8*(id-16) - 5, 8*(id-16) - 4, 8*(id-16) - 3, 8*(id-16) - 2, 8*(id-16) - 1, 8 * (id - 16)}
+						template := []string{"1", "2", "2", "3", "2", "3", "2", "1"}
+						res := []string{}
+						for i := 0; i < 8; i++ {
+							res[i] = line + strconv.Itoa(num[i]) + template[i]
+						}
+						return res, nil
+					}
+				case (id >= 70 && id <= 85):
+					{
+						num := []int{4*(id+37) - 3, 4*(id+37) - 2, 4*(id+37) - 1, 4*(id+53) - 3, 4*(id+53) - 2, 4*(id+53) - 1, 4 * (id + 53), 4 * (id + 37)}
+						template := []string{"1", "2", "2", "3", "2", "3", "2", "1"}
+						res := []string{}
+						for i := 0; i < 8; i++ {
+							res[i] = line + strconv.Itoa(num[i]) + template[i]
+						}
+						return res, nil
+					}
+				case (id >= 86 && id <= 116):
+					{
+						num := []int{8*(id-16) - 7, 8*(id-16) - 6, 8*(id-16) - 5, 8*(id-16) - 4, 8*(id-16) - 3, 8*(id-16) - 2, 8*(id-16) - 1, 8 * (id - 16)}
+						template := []string{"1", "2", "3", "2", "3", "3", "2", "1"}
+						res := []string{}
+						for i := 0; i < 8; i++ {
+							res[i] = line + strconv.Itoa(num[i]) + template[i]
+						}
+						return res, nil
+					}
+				default:
+					{
+						E := &Error{Code: "0019", Msg: "Unexpected field reached"}
+						return []string{}, E
+					}
+				}
+			}
 		case "05":
 			{
 				switch {
@@ -1254,6 +1619,20 @@ func FormatCarriageNumbers(id int, line string, isAnda bool) ([]string, *Error) 
 					}
 				}
 				res := []string{}
+				return res, nil
+			}
+		case "14":
+			{
+				num := []int{8*id - 7, 8*id - 6, 8*id - 5, 8*id - 4, 8*id - 3, 8*id - 2, 8*id - 1, 8 * id}
+				template := []string{"1", "2", "3", "2", "3", "3", "2", "1"}
+				res := []string{}
+				for i := 0; i < 8; i++ {
+					num_str := strconv.Itoa(num[i])
+					for len(num_str) < 3 {
+						num_str = "0" + num_str
+					}
+					res = append(res, line+num_str+template[i])
+				}
 				return res, nil
 			}
 		case "16":

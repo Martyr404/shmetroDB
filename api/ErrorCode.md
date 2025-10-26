@@ -16,3 +16,8 @@ error code:
     0015: PostgreSQL initialize error
     0016: SQL Query error
     0017: Scan data from psql goes wrong
+    0018: Invalid carriage number
+    0019: Unexpected field reached
+    0020: Invalid carriage number
+    0021: Incorrect carriage type.
+    0022: Unexpected field reached
