@@ -21,3 +21,15 @@ error code:
     0020: Invalid carriage number
     0021: Incorrect carriage type.
     0022: Unexpected field reached
+    0023: Line1 Search 01A04 Carriages Goes Wrong
+    0024: Line1 Search 01A01 Carriages goes wrong
+    0025: Line1 Search 01A01/01A02 Carriages Goes Wrong
+    0026: Line1 Search 01A01/01A02 Carriages goes wrong
+    0027: Line1 Search 01A03 Carriages goes wrong
+    0028: Line1 Search Carriages goes wrong
+    0029: Line1 Search Carriages goes wrong
+    0030: Corresponding train in line1/2 not found
+    0031: Corresponding train in line1/2 not found
+    0032: Corresponding train in line3/5 not found
+    0033: Corresponding train in line3/5 not found
+    0034: Corresponding train in line3/5 not found

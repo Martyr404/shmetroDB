@@ -3,7 +3,6 @@
 node_modules/
 gui/gui/node_modules/
 gui/.pnpm-store/
-./info/table.xlsx
 info/
 # Logs
 logs

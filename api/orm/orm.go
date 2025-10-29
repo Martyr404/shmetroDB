@@ -17,9 +17,10 @@ type TrainInfo struct {
 	TrainDetail     string
 }
 type Error struct {
-	Code    string
-	Msg     string
-	Verbose error
+	Code         string
+	Msg          string
+	Verbose      error
+	VerboseError *Error
 }
 
 func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
@@ -112,9 +113,16 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 						}
 					}
 				default:
-					//
-					//QueryCarriage()
-					return
+					//针对01A04的六位数车号车厢
+					t := TrainInfo{}
+					Err := QueryCarriage("1", number, &t)
+					if Err != nil {
+						e := &Error{Code: "0023", Msg: "Line1 Search 01A04 Carriages Goes Wrong", VerboseError: Err}
+						t.IsEmpty = true
+						return []TrainInfo{t}, e
+					}
+					t.IsEmpty = false
+					return []TrainInfo{t}, nil
 				}
 			}
 		case "02":
@@ -1334,72 +1342,240 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 		case "92":
 			{
 				//line 1 logic
-				trainInfo := TrainInfo{IsEmpty: true}
-				e := &Error{Msg: "to be realized"}
-				return []TrainInfo{trainInfo}, e
+				t := TrainInfo{}
+				Err := QueryCarriage("1", number, &t)
+				if Err != nil {
+					e := &Error{Code: "0024", Msg: "Line1 Search 01A01 Carriages goes wrong", VerboseError: Err}
+					t.IsEmpty = true
+					return []TrainInfo{t}, e
+				}
+				t.IsEmpty = false
+				return []TrainInfo{t}, nil
 			}
 		case "93":
 			{
 				//line 1 logic
-				trainInfo := TrainInfo{IsEmpty: true}
-				e := &Error{Msg: "to be realized"}
-				return []TrainInfo{trainInfo}, e
+				t := TrainInfo{}
+				Err := QueryCarriage("1", number, &t)
+				if Err != nil {
+					e := &Error{Code: "0025", Msg: "Line1 Search 01A01/01A02 Carriages goes wrong", VerboseError: Err}
+					t.IsEmpty = true
+					return []TrainInfo{t}, e
+				}
+				t.IsEmpty = false
+				return []TrainInfo{t}, nil
 			}
 		case "94":
 			{
 				//line 1 logic
-				trainInfo := TrainInfo{IsEmpty: true}
-				e := &Error{Msg: "to be realized"}
-				return []TrainInfo{trainInfo}, e
+				t := TrainInfo{}
+				Err := QueryCarriage("1", number, &t)
+				if Err != nil {
+					e := &Error{Code: "0026", Msg: "Line1 Search 01A01/01A02 Carriages goes wrong", VerboseError: Err}
+					t.IsEmpty = true
+					return []TrainInfo{t}, e
+				}
+				t.IsEmpty = false
+				return []TrainInfo{t}, nil
 			}
 		case "98":
 			{
 				//line 1 logic
-				trainInfo := TrainInfo{IsEmpty: true}
-				e := &Error{Msg: "to be realized"}
-				return []TrainInfo{trainInfo}, e
+				t := TrainInfo{}
+				Err := QueryCarriage("1", number, &t)
+				if Err != nil {
+					e := &Error{Code: "0027", Msg: "Line1 Search 01A03 Carriages goes wrong", VerboseError: Err}
+					t.IsEmpty = true
+					return []TrainInfo{t}, e
+				}
+				t.IsEmpty = false
+				return []TrainInfo{t}, nil
 			}
 		case "99":
 			{
 				//line 1 logic
-				trainInfo := TrainInfo{IsEmpty: true}
-				e := &Error{Msg: "to be realized"}
-				return []TrainInfo{trainInfo}, e
+				t := TrainInfo{}
+				Err := QueryCarriage("1", number, &t)
+				if Err != nil {
+					e := &Error{Code: "0028", Msg: "Line1 Search Carriages goes wrong", VerboseError: Err}
+					t.IsEmpty = true
+					return []TrainInfo{t}, e
+				}
+				t.IsEmpty = false
+				return []TrainInfo{t}, nil
+			}
+		case "14":
+			{
+				t := TrainInfo{}
+				Err := QueryCarriage("1", number, &t)
+				if Err != nil {
+					e := &Error{Code: "0029", Msg: "Line1 Search Carriages goes wrong", VerboseError: Err}
+					t.IsEmpty = true
+					return []TrainInfo{t}, e
+				}
+				t.IsEmpty = false
+				return []TrainInfo{t}, nil
 			}
 		case "00":
 			{
 				//line 1/2 logic
-				trainInfo := TrainInfo{IsEmpty: true}
-				e := &Error{Msg: "to be realized"}
-				return []TrainInfo{trainInfo}, e
+				t1, t2 := TrainInfo{}, TrainInfo{}
+				Err1 := QueryCarriage("1", number, &t1)
+				Err2 := QueryCarriage("2", number, &t2)
+				if Err1 != nil || Err2 != nil {
+					Err1.VerboseError = Err2
+					return []TrainInfo{{IsEmpty: true}}, Err1
+				}
+				if t1.TrainId == "" {
+					t1.IsEmpty = true
+					if t2.TrainId == "" {
+						t2.IsEmpty = true
+						Err := Error{Code: "0030", Msg: "Corresponding train in line1/2 not found"}
+						return []TrainInfo{{IsEmpty: true}}, &Err
+					} else {
+						t2.IsEmpty = false
+						return []TrainInfo{t2}, nil
+					}
+				} else {
+					t1.IsEmpty = false
+					return []TrainInfo{t1}, nil
+				}
 			}
 		case "01":
 			{
 				//line 1/2 logic
-				trainInfo := TrainInfo{IsEmpty: true}
-				e := &Error{Msg: "to be realized"}
-				return []TrainInfo{trainInfo}, e
+				t1, t2 := TrainInfo{}, TrainInfo{}
+				Err1 := QueryCarriage("1", number, &t1)
+				Err2 := QueryCarriage("2", number, &t2)
+				if Err1 != nil || Err2 != nil {
+					Err1.VerboseError = Err2
+					return []TrainInfo{{IsEmpty: true}}, Err1
+				}
+				if t1.TrainId == "" {
+					t1.IsEmpty = true
+					if t2.TrainId == "" {
+						t2.IsEmpty = true
+						Err := Error{Code: "0031", Msg: "Corresponding train in line1/2 not found"}
+						return []TrainInfo{{IsEmpty: true}}, &Err
+					} else {
+						t2.IsEmpty = false
+						return []TrainInfo{t2}, nil
+					}
+				} else {
+					t1.IsEmpty = false
+					return []TrainInfo{t1}, nil
+				}
 			}
 		case "02":
 			{
 				//line 3/5 logic
-				trainInfo := TrainInfo{IsEmpty: true}
-				e := &Error{Msg: "to be realized"}
-				return []TrainInfo{trainInfo}, e
+				t1, t2 := TrainInfo{}, TrainInfo{}
+				Err1 := QueryCarriage("3", number, &t1)
+				Err2 := QueryCarriage("5", number, &t2)
+				if Err1 != nil || Err2 != nil {
+					if Err1 == nil {
+						return []TrainInfo{{IsEmpty: true}}, Err2
+					} else {
+						return []TrainInfo{{IsEmpty: true}}, Err1
+					}
+				}
+				if t1.TrainId == "" {
+					if t2.TrainId == "" {
+						t1.IsEmpty = true
+						t2.IsEmpty = true
+						Err := Error{Code: "0032", Msg: "Corresponding train in line3/5 not found"}
+						return []TrainInfo{{IsEmpty: true}}, &Err
+					} else {
+						t1.IsEmpty = true
+						t2.IsEmpty = false
+						return []TrainInfo{t2}, nil
+					}
+				} else {
+					if t2.TrainId == "" {
+						t1.IsEmpty = false
+						t2.IsEmpty = true
+						return []TrainInfo{t1}, nil
+					} else {
+						t1.IsEmpty = false
+						t2.IsEmpty = false
+						return []TrainInfo{t1, t2}, nil
+					}
+				}
+
 			}
 		case "03":
 			{
 				//line 3/5 logic
-				trainInfo := TrainInfo{IsEmpty: true}
-				e := &Error{Msg: "to be realized"}
-				return []TrainInfo{trainInfo}, e
+				t1, t2 := TrainInfo{}, TrainInfo{}
+				Err1 := QueryCarriage("3", number, &t1)
+				Err2 := QueryCarriage("5", number, &t2)
+				if Err1 != nil || Err2 != nil {
+					if Err1 == nil {
+						return []TrainInfo{{IsEmpty: true}}, Err2
+					} else {
+						return []TrainInfo{{IsEmpty: true}}, Err1
+					}
+				}
+				if t1.TrainId == "" {
+					if t2.TrainId == "" {
+						t1.IsEmpty = true
+						t2.IsEmpty = true
+						Err := Error{Code: "0033", Msg: "Corresponding train in line3/5 not found"}
+						return []TrainInfo{{IsEmpty: true}}, &Err
+					} else {
+						t1.IsEmpty = true
+						t2.IsEmpty = false
+						return []TrainInfo{t2}, nil
+					}
+				} else {
+					if t2.TrainId == "" {
+						t1.IsEmpty = false
+						t2.IsEmpty = true
+						return []TrainInfo{t1}, nil
+					} else {
+						t1.IsEmpty = false
+						t2.IsEmpty = false
+						return []TrainInfo{t1, t2}, nil
+					}
+				}
+
 			}
 		case "04":
 			{
 				//line 3/5 logic
-				trainInfo := TrainInfo{IsEmpty: true}
-				e := &Error{Msg: "to be realized"}
-				return []TrainInfo{trainInfo}, e
+				t1, t2 := TrainInfo{}, TrainInfo{}
+				Err1 := QueryCarriage("3", number, &t1)
+				Err2 := QueryCarriage("5", number, &t2)
+				if Err1 != nil || Err2 != nil {
+					if Err1 == nil {
+						return []TrainInfo{{IsEmpty: true}}, Err2
+					} else {
+						return []TrainInfo{{IsEmpty: true}}, Err1
+					}
+				}
+				if t1.TrainId == "" {
+					if t2.TrainId == "" {
+						t1.IsEmpty = true
+						t2.IsEmpty = true
+						Err := Error{Code: "0034", Msg: "Corresponding train in line3/5 not found"}
+						return []TrainInfo{{IsEmpty: true}}, &Err
+					} else {
+						t1.IsEmpty = true
+						t2.IsEmpty = false
+						return []TrainInfo{t2}, nil
+					}
+				} else {
+					if t2.TrainId == "" {
+						t1.IsEmpty = false
+						t2.IsEmpty = true
+						return []TrainInfo{t1}, nil
+					} else {
+						t1.IsEmpty = false
+						t2.IsEmpty = false
+						return []TrainInfo{t1, t2}, nil
+					}
+				}
+
 			}
 		default:
 			{
