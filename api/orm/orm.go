@@ -1601,7 +1601,7 @@ func FormatCarriageNumbers(id int, line string, isAnda bool) ([]string, *Error) 
 						template := []string{"1", "2", "3", "2", "3", "3", "2", "1"}
 						res := []string{}
 						for i := 0; i < 8; i++ {
-							res[i] = line + strconv.Itoa(num[i]) + template[i]
+							res = append(res, line+strconv.Itoa(num[i])+template[i])
 						}
 						return res, nil
 					}
@@ -1611,7 +1611,7 @@ func FormatCarriageNumbers(id int, line string, isAnda bool) ([]string, *Error) 
 						template := []string{"1", "2", "3", "2", "3", "3", "2", "1"}
 						res := []string{}
 						for i := 0; i < 8; i++ {
-							res[i] = line + strconv.Itoa(num[i]) + template[i]
+							res = append(res, line+strconv.Itoa(num[i])+template[i])
 						}
 						return res, nil
 					}
@@ -1631,7 +1631,7 @@ func FormatCarriageNumbers(id int, line string, isAnda bool) ([]string, *Error) 
 						template := []string{"1", "2", "2", "3", "2", "3", "2", "1"}
 						res := []string{}
 						for i := 0; i < 8; i++ {
-							res[i] = line + strconv.Itoa(num[i]) + template[i]
+							res = append(res, line+strconv.Itoa(num[i])+template[i])
 						}
 						return res, nil
 					}
@@ -1641,7 +1641,7 @@ func FormatCarriageNumbers(id int, line string, isAnda bool) ([]string, *Error) 
 						template := []string{"1", "2", "2", "3", "2", "3", "2", "1"}
 						res := []string{}
 						for i := 0; i < 8; i++ {
-							res[i] = line + strconv.Itoa(num[i]) + template[i]
+							res = append(res, line+strconv.Itoa(num[i])+template[i])
 						}
 						return res, nil
 					}
@@ -1651,7 +1651,7 @@ func FormatCarriageNumbers(id int, line string, isAnda bool) ([]string, *Error) 
 						template := []string{"1", "2", "3", "2", "3", "3", "2", "1"}
 						res := []string{}
 						for i := 0; i < 8; i++ {
-							res[i] = line + strconv.Itoa(num[i]) + template[i]
+							res = append(res, line+strconv.Itoa(num[i])+template[i])
 						}
 						return res, nil
 					}

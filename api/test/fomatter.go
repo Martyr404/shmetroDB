@@ -7,9 +7,10 @@ import (
 	"os"
 )
 
-func main() {
+func main22() {
 	// 创建输出文件
-	outputFile, err := os.Create("line5.txt")
+	filename := "/home//testreport/report.txt"
+	outputFile, err := os.Create(filename)
 	if err != nil {
 		fmt.Printf("创建输出文件失败: %v\n", err)
 		return
@@ -17,15 +18,16 @@ func main() {
 	defer outputFile.Close()
 
 	// 生成测试用例：从"050011"到"059999"
-	start := 0     // 后四位起始数字
-	end := 9999    // 后四位结束数字
-	prefix := "05" // 前缀
+	start := 0   // 后四位起始数字
+	end := 10000 // 后四位结束数字
+	//prefix := "01" // 前缀
 
 	for i := start; i <= end; i++ {
 		// 格式化后四位为4位数字（补零）
-		suffix := fmt.Sprintf("%04d", i)
+		suffix := fmt.Sprintf("%05d", i)
 		// 拼接完整测试字符串
-		testCase := prefix + suffix
+		//testCase := prefix + suffix
+		testCase := suffix
 
 		// 调用待测试函数
 		tList, err := orm.ParseCarriageNumber(testCase)
@@ -53,5 +55,5 @@ func main() {
 		}
 	}
 
-	fmt.Println("测试完成，结果已写入output.txt")
+	fmt.Println("测试完成，结果已写入", filename)
 }
