@@ -1,6 +1,7 @@
 package orm
 
 import (
+	"fmt"
 	"regexp"
 	"shmetroDB/psql"
 	"strconv"
@@ -1582,6 +1583,142 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 				return []TrainInfo{{IsEmpty: true}}, &Error{Code: "0002", Msg: "Unknown type carriage number"}
 			}
 		}
+	} else if len(number) == 7 {
+		numberLower := strings.ToLower(number)
+		lineNum, carriageNum := numberLower[:3], numberLower[3:6]
+		switch lineNum {
+		case "jc4":
+			{
+				//jc logic
+				carriage_num_int, err := strconv.Atoi(carriageNum)
+				if err != nil {
+					return []TrainInfo{{IsEmpty: true}}, &Error{Code: "0003", Msg: "Invalid carriage number."}
+				}
+				if carriage_num_int%4 == 0 {
+					calculated_id := carriage_num_int / 4
+					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "jc4", false)
+					trainInfo := TrainInfo{
+						//若三位数车号12000改1200
+						IsEmpty:         false,
+						TrainId:         "JC4" + fmt.Sprintf("%03d", calculated_id),
+						Carriage_number: carriage_nums,
+						Carriage_index:  "3",
+					}
+					//judge carriage type is correct
+					for _, value := range carriage_nums {
+						if number == value {
+							return []TrainInfo{trainInfo}, nil
+						}
+					}
+					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+				} else {
+					calculated_id := carriage_num_int/4 + 1
+					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "jc4", false)
+					trainInfo := TrainInfo{
+						IsEmpty:         false,
+						TrainId:         "JC4" + fmt.Sprintf("%03d", calculated_id),
+						Carriage_number: carriage_nums,
+						Carriage_index:  strconv.Itoa(carriage_num_int%4 - 1),
+					}
+					//judge carriage type is correct
+					for _, value := range carriage_nums {
+						if number == value {
+							return []TrainInfo{trainInfo}, nil
+						}
+					}
+					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+				}
+			}
+		case "jc8":
+			{
+				//jc logic
+				carriage_num_int, err := strconv.Atoi(carriageNum)
+				if err != nil {
+					return []TrainInfo{{IsEmpty: true}}, &Error{Code: "0003", Msg: "Invalid carriage number."}
+				}
+				if carriage_num_int%8 == 0 {
+					calculated_id := carriage_num_int / 8
+					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "jc8", false)
+					trainInfo := TrainInfo{
+						//若三位数车号12000改1200
+						IsEmpty:         false,
+						TrainId:         "JC8" + fmt.Sprintf("%03d", calculated_id),
+						Carriage_number: carriage_nums,
+						Carriage_index:  "7",
+					}
+					//judge carriage type is correct
+					for _, value := range carriage_nums {
+						if number == value {
+							return []TrainInfo{trainInfo}, nil
+						}
+					}
+					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+				} else {
+					calculated_id := carriage_num_int/8 + 1
+					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "jc8", false)
+					trainInfo := TrainInfo{
+						IsEmpty:         false,
+						TrainId:         "JC8" + fmt.Sprintf("%03d", calculated_id),
+						Carriage_number: carriage_nums,
+						Carriage_index:  strconv.Itoa(carriage_num_int%8 - 1),
+					}
+					//judge carriage type is correct
+					for _, value := range carriage_nums {
+						if number == value {
+							return []TrainInfo{trainInfo}, nil
+						}
+					}
+					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+				}
+			}
+		case "t01":
+			{
+				//jc logic
+				carriage_num_int, err := strconv.Atoi(carriageNum)
+				if err != nil {
+					return []TrainInfo{{IsEmpty: true}}, &Error{Code: "0003", Msg: "Invalid carriage number."}
+				}
+				if carriage_num_int%4 == 0 {
+					calculated_id := carriage_num_int / 4
+					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "t01", false)
+					trainInfo := TrainInfo{
+						//若三位数车号12000改1200
+						IsEmpty:         false,
+						TrainId:         "T01" + fmt.Sprintf("%02d", calculated_id),
+						Carriage_number: carriage_nums,
+						Carriage_index:  "3",
+					}
+					//judge carriage type is correct
+					for _, value := range carriage_nums {
+						if number == value {
+							return []TrainInfo{trainInfo}, nil
+						}
+					}
+					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+				} else {
+					calculated_id := carriage_num_int/4 + 1
+					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "t01", false)
+					trainInfo := TrainInfo{
+						IsEmpty:         false,
+						TrainId:         "T01" + fmt.Sprintf("%02d", calculated_id),
+						Carriage_number: carriage_nums,
+						Carriage_index:  strconv.Itoa(carriage_num_int%4 - 1),
+					}
+					//judge carriage type is correct
+					for _, value := range carriage_nums {
+						if number == value {
+							return []TrainInfo{trainInfo}, nil
+						}
+					}
+					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+				}
+			}
+		default:
+			{
+				return []TrainInfo{{IsEmpty: true}}, &Error{Code: "0002", Msg: "Unknown type carriage number"}
+			}
+
+		}
 	} else {
 		return []TrainInfo{{IsEmpty: true}}, &Error{Code: "0005", Msg: "Invalid carriage number"}
 	}
@@ -1861,6 +1998,40 @@ func FormatCarriageNumbers(id int, line string, isAnda bool) ([]string, *Error) 
 					return res, nil
 				}
 			}
+		case "jc4":
+			{
+				num := []int{4*id - 3, 4*id - 2, 4*id - 1, 4 * id}
+				template := []string{"1", "2", "3", "4"}
+				res := []string{}
+				for i := 0; i < 4; i++ {
+					num_str := fmt.Sprintf("%03d", num[i])
+					res = append(res, "JC4"+num_str+template[i])
+				}
+				return res, nil
+			}
+		case "jc8":
+			{
+				num := []int{8*id - 7, 8*id - 6, 8*id - 5, 8*id - 4, 8*id - 3, 8*id - 2, 8*id - 1, 8 * id}
+				template := []string{"1", "2", "3", "4", "5", "6", "7", "8"}
+				res := []string{}
+				for i := 0; i < 8; i++ {
+					num_str := fmt.Sprintf("%03d", num[i])
+					res = append(res, "JC8"+num_str+template[i])
+				}
+				return res, nil
+
+			}
+		case "t01":
+			{
+				num := []int{4*id - 3, 4*id - 2, 4*id - 1, 4 * id}
+				template := []string{"1", "2", "2", "1"}
+				res := []string{}
+				for i := 0; i < 4; i++ {
+					num_str := fmt.Sprintf("%03d", num[i])
+					res = append(res, "T01"+num_str+template[i])
+				}
+				return res, nil
+			}
 		default:
 			{
 				num := []int{6*id - 5, 6*id - 4, 6*id - 3, 6*id - 2, 6*id - 1, 6 * id}
@@ -1870,10 +2041,7 @@ func FormatCarriageNumbers(id int, line string, isAnda bool) ([]string, *Error) 
 						template := []string{"1", "2", "3", "2", "3", "1"}
 						res := []string{}
 						for i := 0; i < 6; i++ {
-							num_str := strconv.Itoa(num[i])
-							for len(num_str) < 3 {
-								num_str = "0" + num_str
-							}
+							num_str := fmt.Sprintf("%03d", num[i])
 							res = append(res, line+num_str+template[i])
 						}
 						return res, nil
@@ -1883,10 +2051,7 @@ func FormatCarriageNumbers(id int, line string, isAnda bool) ([]string, *Error) 
 						template := []string{"1", "2", "3", "3", "2", "1"}
 						res := []string{}
 						for i := 0; i < 6; i++ {
-							num_str := strconv.Itoa(num[i])
-							for len(num_str) < 3 {
-								num_str = "0" + num_str
-							}
+							num_str := fmt.Sprintf("%03d", num[i])
 							res = append(res, line+num_str+template[i])
 						}
 						return res, nil

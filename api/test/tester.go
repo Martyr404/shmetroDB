@@ -6,6 +6,6 @@ import (
 )
 
 func main() {
-	res, err := orm.ParseCarriageNumber("012350")
+	res, err := orm.ParseCarriageNumber("jC40093")
 	fmt.Println(res, err)
 }
