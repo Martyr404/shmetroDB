@@ -1719,6 +1719,58 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 			}
 
 		}
+	} else if len(number) == 8 {
+		numberLower := strings.ToLower(number)
+		lineNum, carriageNum := numberLower[:4], numberLower[4:7]
+		switch lineNum {
+		case "jy01":
+			{
+				//jc logic
+				carriage_num_int, err := strconv.Atoi(carriageNum)
+				if err != nil {
+					return []TrainInfo{{IsEmpty: true}}, &Error{Code: "0003", Msg: "Invalid carriage number."}
+				}
+				if carriage_num_int%4 == 0 {
+					calculated_id := carriage_num_int / 4
+					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "jy01", false)
+					trainInfo := TrainInfo{
+						//若三位数车号12000改1200
+						IsEmpty:         false,
+						TrainId:         "JY01" + fmt.Sprintf("%02d", calculated_id),
+						Carriage_number: carriage_nums,
+						Carriage_index:  "3",
+					}
+					//judge carriage type is correct
+					for _, value := range carriage_nums {
+						if number == value {
+							return []TrainInfo{trainInfo}, nil
+						}
+					}
+					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+				} else {
+					calculated_id := carriage_num_int/4 + 1
+					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "jy01", false)
+					trainInfo := TrainInfo{
+						IsEmpty:         false,
+						TrainId:         "JY01" + fmt.Sprintf("%02d", calculated_id),
+						Carriage_number: carriage_nums,
+						Carriage_index:  strconv.Itoa(carriage_num_int%4 - 1),
+					}
+					//judge carriage type is correct
+					for _, value := range carriage_nums {
+						if number == value {
+							return []TrainInfo{trainInfo}, nil
+						}
+					}
+					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+				}
+			}
+		default:
+			{
+				return []TrainInfo{{IsEmpty: true}}, &Error{Code: "0002", Msg: "Unknown type carriage number"}
+			}
+
+		}
 	} else {
 		return []TrainInfo{{IsEmpty: true}}, &Error{Code: "0005", Msg: "Invalid carriage number"}
 	}
@@ -2029,6 +2081,17 @@ func FormatCarriageNumbers(id int, line string, isAnda bool) ([]string, *Error) 
 				for i := 0; i < 4; i++ {
 					num_str := fmt.Sprintf("%03d", num[i])
 					res = append(res, "T01"+num_str+template[i])
+				}
+				return res, nil
+			}
+		case "jy01":
+			{
+				num := []int{4*id - 3, 4*id - 2, 4*id - 1, 4 * id}
+				template := []string{"1", "2", "2", "1"}
+				res := []string{}
+				for i := 0; i < 4; i++ {
+					num_str := fmt.Sprintf("%03d", num[i])
+					res = append(res, "JY01"+num_str+template[i])
 				}
 				return res, nil
 			}
