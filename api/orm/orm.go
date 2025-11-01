@@ -1765,6 +1765,48 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
 				}
 			}
+		case "sj01":
+			{
+				//jc logic
+				carriage_num_int, err := strconv.Atoi(carriageNum)
+				if err != nil {
+					return []TrainInfo{{IsEmpty: true}}, &Error{Code: "0003", Msg: "Invalid carriage number."}
+				}
+				if carriage_num_int%5 == 0 {
+					calculated_id := carriage_num_int / 5
+					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "sj01", false)
+					trainInfo := TrainInfo{
+						//若三位数车号12000改1200
+						IsEmpty:         false,
+						TrainId:         "SJ01" + fmt.Sprintf("%02d", calculated_id),
+						Carriage_number: carriage_nums,
+						Carriage_index:  "4",
+					}
+					//judge carriage type is correct
+					for _, value := range carriage_nums {
+						if number == value {
+							return []TrainInfo{trainInfo}, nil
+						}
+					}
+					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+				} else {
+					calculated_id := carriage_num_int/5 + 1
+					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "sj01", false)
+					trainInfo := TrainInfo{
+						IsEmpty:         false,
+						TrainId:         "SJ01" + fmt.Sprintf("%02d", calculated_id),
+						Carriage_number: carriage_nums,
+						Carriage_index:  strconv.Itoa(carriage_num_int%5 - 1),
+					}
+					//judge carriage type is correct
+					for _, value := range carriage_nums {
+						if number == value {
+							return []TrainInfo{trainInfo}, nil
+						}
+					}
+					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+				}
+			}
 		default:
 			{
 				return []TrainInfo{{IsEmpty: true}}, &Error{Code: "0002", Msg: "Unknown type carriage number"}
@@ -2095,6 +2137,17 @@ func FormatCarriageNumbers(id int, line string, isAnda bool) ([]string, *Error) 
 				}
 				return res, nil
 			}
+		case "sj01":
+			{
+				num := []int{5*id - 4, 5*id - 3, 5*id - 2, 5*id - 1, 5 * id}
+				template := []string{"1", "2", "3", "2", "1"}
+				res := []string{}
+				for i := 0; i < 5; i++ {
+					num_str := fmt.Sprintf("%03d", num[i])
+					res = append(res, "SJ01"+num_str+template[i])
+				}
+				return res, nil
+			}
 		default:
 			{
 				num := []int{6*id - 5, 6*id - 4, 6*id - 3, 6*id - 2, 6*id - 1, 6 * id}
@@ -2134,7 +2187,7 @@ func FormatCarriageNumbers(id int, line string, isAnda bool) ([]string, *Error) 
 
 // 验证车厢号的合法性，支持大小写混合
 func ValidateCarriageNumbers(number string) bool {
-	pattern := `(?i)^(?:\d{5}|\d{6}|T\d{6}|JC\d{5}|JY\d{6})$`
+	pattern := `(?i)^(?:\d{5}|\d{6}|T\d{6}|JC\d{5}|SJ\d{6}|JY\d{6})$`
 	matched, _ := regexp.MatchString(pattern, number)
 	return matched
 }
