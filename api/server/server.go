@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"shmetroDB/middleware"
@@ -30,7 +29,11 @@ func (s Server) Init() {
 		// 读取请求体
 		rawBody, err := io.ReadAll(c.Request.Body)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"msg": "read body error"})
+			c.JSON(http.StatusBadRequest, gin.H{
+				"StateCode": "4000",
+				"Msg":       "ioReader Read Request Body Error",
+				"Data":      "",
+			})
 			return
 		}
 
@@ -38,92 +41,67 @@ func (s Server) Init() {
 		var req RequestBody
 		if err := json.Unmarshal(rawBody, &req); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
-				"msg":    "parse error (expect JSON format: {\"carriage_number\": \"xxx\"})",
-				"detail": err.Error(), // 增加错误详情便于调试
+				"StateCode": "4001",
+				"Msg":       "invalid carriage_number",
+				"Data":      "",
 			})
 			return
 		}
 
 		// 验证参数是否为空
 		if req.Carriage_number == "" {
-			c.JSON(http.StatusBadRequest, gin.H{"msg": "missing carriage_number"})
+			c.JSON(http.StatusBadRequest, gin.H{
+				"StateCode": "4002",
+				"Msg":       "invalid carriage_number",
+				"Data":      "",
+			})
 			return
 		}
 		// 验证车厢号是否合法
 		if !orm.ValidateCarriageNumbers(req.Carriage_number) {
-			c.JSON(http.StatusBadRequest, gin.H{"msg": "invalid carriage_number"})
+			c.JSON(http.StatusBadRequest, gin.H{
+				"StateCode": "4002",
+				"Msg":       "invalid carriage_number",
+				"Data":      "",
+			})
 			return
 		}
 
 		//计算车号
-		trainInfo, Err := orm.ParseCarriageNumber(req.Carriage_number)
-		//fmt.Println(trainInfo)
-		//查询车号详情
-		//注意可能出现数据库不存在对应列车信息情况
-		if trainInfo.TrainId != "" {
-			E := orm.QueryInfo(trainInfo.TrainId, &trainInfo)
-			if E != nil {
-				if E.Verbose != nil {
-					fmt.Printf("Error Code: %s, Verbose: %s\n", E.Code, E.Verbose.Error())
-				} else {
-					fmt.Printf("Error Code: %s\n", E.Code)
-				}
-				c.JSON(http.StatusInternalServerError, gin.H{
-					"code": "500",
-					"Msg":  "internal server error",
-				})
-				return
-			}
-		} else {
-			c.JSON(http.StatusOK, gin.H{
-				"msg": "you are searching number " + req.Carriage_number,
-				"result": gin.H{
-					"TrainId":                    trainInfo.TrainId,
-					"Carriage_num":               trainInfo.Carriage_number,
-					"Carriage_index":             trainInfo.Carriage_index,
-					"Train_type":                 trainInfo.Train_type,
-					"Train_detail":               trainInfo.TrainDetail,
-					"isInputCarriageTypeCorrect": true,
-				},
-			})
-			return
-		}
-
-		// 处理成功
+		trainInfos, Err := orm.ParseCarriageNumber(req.Carriage_number)
 		if Err != nil {
-			if Err.Code == "0006" {
-				c.JSON(http.StatusOK, gin.H{
-					"msg": "you are searching number " + req.Carriage_number,
-					"result": gin.H{
-						"TrainId":                    trainInfo.TrainId,
-						"Carriage_num":               trainInfo.Carriage_number,
-						"Carriage_index":             trainInfo.Carriage_index,
-						"Train_type":                 trainInfo.Train_type,
-						"Train_detail":               trainInfo.TrainDetail,
-						"isInputCarriageTypeCorrect": false,
-					},
-				})
-				return
-			} else {
-				c.JSON(http.StatusInternalServerError, gin.H{
-					"code": "500",
-					"Msg":  "internal server error",
-				})
-				return
-			}
-		} else {
-			c.JSON(http.StatusOK, gin.H{
-				"msg": "you are searching number " + req.Carriage_number,
-				"result": gin.H{
-					"TrainId":                    trainInfo.TrainId,
-					"Carriage_num":               trainInfo.Carriage_number,
-					"Carriage_index":             trainInfo.Carriage_index,
-					"Train_type":                 trainInfo.Train_type,
-					"Train_detail":               trainInfo.TrainDetail,
-					"isInputCarriageTypeCorrect": true,
-				},
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"StateCode": "5000",
+				"Msg":       "parse carriage number goes wrong",
+				//方便debug用，实际上线用""替换Err
+				"Data": Err,
 			})
-			return
+		} else {
+			//trainInfo 以下不应该为空
+			//遍历查询车号详情
+			json_data := make([]orm.TrainInfo, 0)
+			for index := range trainInfos {
+				if !trainInfos[index].IsEmpty {
+					Err := orm.QueryInfo(trainInfos[index].TrainId, &trainInfos[index])
+					if Err != nil {
+						c.JSON(http.StatusInternalServerError, gin.H{
+							"StateCode": "5001",
+							"Msg":       "Query carriage number goes wrong",
+							//方便debug用，实际上线用""替换Err
+							"Data": Err,
+						})
+						break
+					}
+					if !trainInfos[index].IsEmpty {
+						json_data = append(json_data, trainInfos[index])
+					}
+				}
+			}
+			c.JSON(http.StatusAccepted, gin.H{
+				"StateCode": "2000",
+				"Msg":       "Query carriage number:" + req.Carriage_number + " successfully",
+				"Data":      json_data,
+			})
 		}
 
 	})

@@ -33,3 +33,4 @@ error code:
     0032: Corresponding train in line3/5 not found
     0033: Corresponding train in line3/5 not found
     0034: Corresponding train in line3/5 not found
+    0035: Unknown type train id

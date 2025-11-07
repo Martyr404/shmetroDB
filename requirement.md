@@ -20,3 +20,17 @@ select
   -- 生成相同格式的train_type（根据需求调整）
   '09' || lpad(generate_series(1, 105)::text, 3, '0') as train_type,
   '平平无奇' as train_detail;
+
+
+
+c.JSON(http.StatusOK, gin.H{
+				"msg": "you are searching number " + req.Carriage_number,
+				"result": gin.H{
+					"TrainId":                    trainInfo.TrainId,
+					"Carriage_num":               trainInfo.Carriage_number,
+					"Carriage_index":             trainInfo.Carriage_index,
+					"Train_type":                 trainInfo.Train_type,
+					"Train_detail":               trainInfo.TrainDetail,
+					"isInputCarriageTypeCorrect": true,
+				},
+			})

@@ -9,13 +9,14 @@ import (
 )
 
 type TrainInfo struct {
-	Pk              int
-	IsEmpty         bool
-	TrainId         string
-	Train_type      string
-	Carriage_number []string
-	Carriage_index  string
-	TrainDetail     string
+	Pk                     int
+	IsEmpty                bool
+	TrainId                string
+	Train_type             string
+	Carriage_number        []string
+	Carriage_index         string
+	TrainDetail            string
+	IsInputCarriageCorrect bool
 }
 type Error struct {
 	Code         string
@@ -52,10 +53,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						} else {
 							calculated_id := (carriage_num_int-234)/8 + 40
 							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "01", false)
@@ -69,10 +72,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						}
 					}
 				case (carriage_num_int >= 468 && carriage_num_int <= 715):
@@ -90,10 +95,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0021", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						} else {
 							calculated_id := (carriage_num_int-467)/8 + 55
 							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "01", false)
@@ -107,10 +114,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						}
 					}
 				default:
@@ -150,10 +159,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						} else {
 							calculated_id := carriage_num_int/8 + 17
 							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "02", false)
@@ -167,10 +178,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						}
 
 					}
@@ -190,10 +203,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						} else {
 							calculated_id := carriage_num_int/4 - 36
 							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "02", false)
@@ -207,10 +222,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						}
 					}
 				case (carriage_num_int >= 489 && carriage_num_int <= 552):
@@ -229,10 +246,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						} else {
 							calculated_id := carriage_num_int/4 - 52
 							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "02", false)
@@ -246,10 +265,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						}
 					}
 				case (carriage_num_int <= 553 && carriage_num_int <= 800):
@@ -268,10 +289,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						} else {
 							calculated_id := carriage_num_int/8 + 17
 							carriage_nums, _ := FormatCarriageNumbers(calculated_id, "02", false)
@@ -285,10 +308,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						}
 					}
 				default:
@@ -317,10 +342,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				} else {
 					calculated_id := carriage_num_int/6 + 1
 					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "03", false)
@@ -334,10 +361,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				}
 			}
 		case "04":
@@ -366,10 +395,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				} else {
 					calculated_id := carriage_num_int/6 + 1
 					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "04", false)
@@ -389,10 +420,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				}
 			}
 		case "05":
@@ -418,10 +451,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 						//judge carriage type is correct
 						for _, value := range carriage_nums {
 							if number == value {
+								trainInfo.IsInputCarriageCorrect = true
 								return []TrainInfo{trainInfo}, nil
 							}
 						}
-						return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						trainInfo.IsInputCarriageCorrect = false
+						return []TrainInfo{trainInfo}, nil
 					} else {
 						calculated_id := (carriage_num_int-68)/6 + 19
 						carriage_nums, _ := FormatCarriageNumbers(calculated_id, "05", false)
@@ -435,10 +470,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 						//judge carriage type is correct
 						for _, value := range carriage_nums {
 							if number == value {
+								trainInfo.IsInputCarriageCorrect = true
 								return []TrainInfo{trainInfo}, nil
 							}
 						}
-						return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						trainInfo.IsInputCarriageCorrect = false
+						return []TrainInfo{trainInfo}, nil
 					}
 				} else {
 					//4节车逻辑
@@ -458,10 +495,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 						//judge carriage type is correct
 						for _, value := range carriage_nums {
 							if number == value {
+								trainInfo.IsInputCarriageCorrect = true
 								return []TrainInfo{trainInfo}, nil
 							}
 						}
-						return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						trainInfo.IsInputCarriageCorrect = false
+						return []TrainInfo{trainInfo}, nil
 					}
 				}
 			}
@@ -488,10 +527,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						} else {
 							//不能整除逻辑
 							calculated_id := carriage_num_int/4 + 1
@@ -505,10 +546,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						}
 					}
 				case carriage_num_int >= 13 && carriage_num_int <= 48:
@@ -526,10 +569,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						} else {
 							//不能整除逻辑
 							calculated_id := carriage_num_int/4 + 2
@@ -543,10 +588,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						}
 					}
 				case carriage_num_int >= 49 && carriage_num_int <= 84:
@@ -564,10 +611,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						} else {
 							//不能整除逻辑
 							calculated_id := carriage_num_int/4 + 3
@@ -581,10 +630,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						}
 					}
 				case carriage_num_int >= 85 && carriage_num_int <= 120:
@@ -602,10 +653,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						} else {
 							//不能整除逻辑
 							calculated_id := carriage_num_int/4 + 4
@@ -619,10 +672,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						}
 					}
 				case carriage_num_int >= 121 && carriage_num_int <= 156:
@@ -640,10 +695,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						} else {
 							//不能整除逻辑
 							calculated_id := carriage_num_int/4 + 5
@@ -657,10 +714,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						}
 					}
 				case carriage_num_int >= 157 && carriage_num_int <= 192:
@@ -678,10 +737,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						} else {
 							//不能整除逻辑
 							calculated_id := carriage_num_int/4 + 6
@@ -695,10 +756,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						}
 					}
 				case carriage_num_int >= 193:
@@ -716,10 +779,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						} else {
 							//不能整除逻辑
 							calculated_id := carriage_num_int/4 + 7
@@ -733,10 +798,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 							//judge carriage type is correct
 							for _, value := range carriage_nums {
 								if number == value {
+									trainInfo.IsInputCarriageCorrect = true
 									return []TrainInfo{trainInfo}, nil
 								}
 							}
-							return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+							trainInfo.IsInputCarriageCorrect = false
+							return []TrainInfo{trainInfo}, nil
 						}
 					}
 				}
@@ -762,10 +829,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				} else {
 					calculated_id := carriage_num_int/6 + 1
 					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "07", false)
@@ -779,10 +848,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				}
 			}
 		case "08":
@@ -807,10 +878,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 						//judge carriage type is correct
 						for _, value := range carriage_nums {
 							if number == value {
+								trainInfo.IsInputCarriageCorrect = true
 								return []TrainInfo{trainInfo}, nil
 							}
 						}
-						return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						trainInfo.IsInputCarriageCorrect = false
+						return []TrainInfo{trainInfo}, nil
 					} else {
 						calculated_id := carriage_num_int/6 + 1
 						carriage_nums, _ := FormatCarriageNumbers(calculated_id, "08", false)
@@ -824,10 +897,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 						//judge carriage type is correct
 						for _, value := range carriage_nums {
 							if number == value {
+								trainInfo.IsInputCarriageCorrect = true
 								return []TrainInfo{trainInfo}, nil
 							}
 						}
-						return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						trainInfo.IsInputCarriageCorrect = false
+						return []TrainInfo{trainInfo}, nil
 					}
 				} else {
 					//7节车逻辑
@@ -844,10 +919,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 						//judge carriage type is correct
 						for _, value := range carriage_nums {
 							if number == value {
+								trainInfo.IsInputCarriageCorrect = true
 								return []TrainInfo{trainInfo}, nil
 							}
 						}
-						return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						trainInfo.IsInputCarriageCorrect = false
+						return []TrainInfo{trainInfo}, nil
 					} else {
 						calculated_id := (carriage_num_int-168)/7 + 29
 						carriage_nums, _ := FormatCarriageNumbers(calculated_id, "08", false)
@@ -861,10 +938,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 						//judge carriage type is correct
 						for _, value := range carriage_nums {
 							if number == value {
+								trainInfo.IsInputCarriageCorrect = true
 								return []TrainInfo{trainInfo}, nil
 							}
 						}
-						return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						trainInfo.IsInputCarriageCorrect = false
+						return []TrainInfo{trainInfo}, nil
 					}
 				}
 
@@ -889,16 +968,18 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				} else {
 					calculated_id := carriage_num_int/6 + 1
 					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "09", false)
 					trainInfo := TrainInfo{
 						//若三位数车号9000改900
-						IsEmpty:         true,
+						IsEmpty:         false,
 						TrainId:         "0" + strconv.Itoa(9000+calculated_id),
 						Carriage_number: carriage_nums,
 						Carriage_index:  strconv.Itoa(carriage_num_int%6 - 1),
@@ -906,10 +987,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				}
 			}
 		case "10":
@@ -932,10 +1015,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				} else {
 					calculated_id := carriage_num_int/6 + 1
 					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "10", false)
@@ -948,10 +1033,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				}
 			}
 		case "11":
@@ -974,10 +1061,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				} else {
 					calculated_id := carriage_num_int/6 + 1
 					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "11", false)
@@ -990,10 +1079,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				}
 			}
 		case "12":
@@ -1016,10 +1107,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				} else {
 					calculated_id := carriage_num_int/6 + 1
 					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "12", false)
@@ -1032,10 +1125,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				}
 			}
 		case "13":
@@ -1058,10 +1153,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				} else {
 					calculated_id := carriage_num_int/6 + 1
 					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "13", false)
@@ -1074,10 +1171,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				}
 			}
 		case "14":
@@ -1100,10 +1199,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				} else {
 					calculated_id := carriage_num_int/6 + 1
 					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "14", false)
@@ -1116,10 +1217,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				}
 			}
 		case "15":
@@ -1142,10 +1245,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				} else {
 					calculated_id := carriage_num_int/6 + 1
 					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "15", false)
@@ -1158,10 +1263,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				}
 			}
 		case "16":
@@ -1186,10 +1293,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 						//judge carriage type is correct
 						for _, value := range carriage_nums {
 							if number == value {
+								trainInfo.IsInputCarriageCorrect = true
 								return []TrainInfo{trainInfo}, nil
 							}
 						}
-						return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						trainInfo.IsInputCarriageCorrect = false
+						return []TrainInfo{trainInfo}, nil
 					} else {
 						calculated_id := carriage_num_int/3 + 1
 						carriage_nums, _ := FormatCarriageNumbers(calculated_id, "16", false)
@@ -1203,10 +1312,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 						//judge carriage type is correct
 						for _, value := range carriage_nums {
 							if number == value {
+								trainInfo.IsInputCarriageCorrect = true
 								return []TrainInfo{trainInfo}, nil
 							}
 						}
-						return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						trainInfo.IsInputCarriageCorrect = false
+						return []TrainInfo{trainInfo}, nil
 					}
 				} else {
 					//6节车逻辑
@@ -1223,10 +1334,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 						//judge carriage type is correct
 						for _, value := range carriage_nums {
 							if number == value {
+								trainInfo.IsInputCarriageCorrect = true
 								return []TrainInfo{trainInfo}, nil
 							}
 						}
-						return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						trainInfo.IsInputCarriageCorrect = false
+						return []TrainInfo{trainInfo}, nil
 					} else {
 						calculated_id := (carriage_num_int-138)/6 + 46
 						carriage_nums, _ := FormatCarriageNumbers(calculated_id, "16", false)
@@ -1240,10 +1353,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 						//judge carriage type is correct
 						for _, value := range carriage_nums {
 							if number == value {
+								trainInfo.IsInputCarriageCorrect = true
 								return []TrainInfo{trainInfo}, nil
 							}
 						}
-						return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+						trainInfo.IsInputCarriageCorrect = false
+						return []TrainInfo{trainInfo}, nil
 					}
 				}
 
@@ -1268,10 +1383,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				} else {
 					calculated_id := carriage_num_int/6 + 1
 					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "17", false)
@@ -1284,10 +1401,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				}
 			}
 		case "18":
@@ -1310,10 +1429,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				} else {
 					calculated_id := carriage_num_int/6 + 1
 					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "18", false)
@@ -1326,10 +1447,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				}
 			}
 		default:
@@ -1607,10 +1730,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				} else {
 					calculated_id := carriage_num_int/4 + 1
 					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "jc4", false)
@@ -1623,10 +1748,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				}
 			}
 		case "jc8":
@@ -1649,10 +1776,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				} else {
 					calculated_id := carriage_num_int/8 + 1
 					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "jc8", false)
@@ -1665,10 +1794,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				}
 			}
 		case "t01":
@@ -1691,10 +1822,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				} else {
 					calculated_id := carriage_num_int/4 + 1
 					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "t01", false)
@@ -1707,10 +1840,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				}
 			}
 		default:
@@ -1743,10 +1878,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				} else {
 					calculated_id := carriage_num_int/4 + 1
 					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "jy01", false)
@@ -1759,10 +1896,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				}
 			}
 		case "sj01":
@@ -1785,10 +1924,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				} else {
 					calculated_id := carriage_num_int/5 + 1
 					carriage_nums, _ := FormatCarriageNumbers(calculated_id, "sj01", false)
@@ -1801,10 +1942,12 @@ func ParseCarriageNumber(number string) ([]TrainInfo, *Error) {
 					//judge carriage type is correct
 					for _, value := range carriage_nums {
 						if number == value {
+							trainInfo.IsInputCarriageCorrect = true
 							return []TrainInfo{trainInfo}, nil
 						}
 					}
-					return []TrainInfo{trainInfo}, &Error{Code: "0006", Msg: "Incorrect carriage type."}
+					trainInfo.IsInputCarriageCorrect = false
+					return []TrainInfo{trainInfo}, nil
 				}
 			}
 		default:
@@ -2193,34 +2336,240 @@ func ValidateCarriageNumbers(number string) bool {
 }
 func QueryInfo(train_id string, t *TrainInfo) *Error {
 	if len(train_id) == 5 {
-		line, _ := train_id[:2], train_id[2:]
-		line_int_tmp, _ := strconv.Atoi(line)
-		line_pop_zero := strconv.Itoa(line_int_tmp)
-		sql := "select * from line" + line_pop_zero + " where train_id='" + train_id + "'"
+		if strings.ToLower(string(train_id[0])) != "t" {
+			line, _ := train_id[:2], train_id[2:]
+			line_int_tmp, _ := strconv.Atoi(line)
+			line_pop_zero := strconv.Itoa(line_int_tmp)
+			sql := "select * from line" + line_pop_zero + " where train_id='" + train_id + "'"
 
-		err := psql.Init()
-		if err != nil {
-			e := &Error{Code: "0008", Msg: "PostgreSQL initialize error", Verbose: err}
-			return e
-		}
-		db := psql.GetDB()
-		// 执行查询
-		res, err := db.Query(sql)
-		if err != nil {
-			e := &Error{Code: "0009", Msg: "SQL Query error", Verbose: err}
-			return e
-		}
-		defer res.Close()
-		defer db.Close()
-		//fmt.Printf("pk\ttrain_id\ttrain_type\ttrain_detail\n")
-		for res.Next() {
-			err := res.Scan(&t.Pk, &t.TrainId, &t.Train_type, &t.TrainDetail)
+			err := psql.Init()
 			if err != nil {
-				e := &Error{Code: "0010", Msg: "Scan data from psql goes wrong", Verbose: err}
+				e := &Error{Code: "0008", Msg: "PostgreSQL initialize error", Verbose: err}
 				return e
 			}
+			db := psql.GetDB()
+			// 执行查询
+			res, err := db.Query(sql)
+			if err != nil {
+				e := &Error{Code: "0009", Msg: "SQL Query error", Verbose: err}
+				return e
+			}
+			defer res.Close()
+			defer db.Close()
+			//fmt.Printf("pk\ttrain_id\ttrain_type\ttrain_detail\n")
+			info_cpy := TrainInfo{}
+			for res.Next() {
+				err := res.Scan(&info_cpy.Pk, &info_cpy.TrainId, &info_cpy.Train_type, &info_cpy.TrainDetail)
+				if err != nil {
+					e := &Error{Code: "0010", Msg: "Scan data from psql goes wrong", Verbose: err}
+					return e
+				}
+			}
+			//judge the target info_cpy whether exist
+			if info_cpy.TrainId == "" {
+				t.Pk = 0
+				t.TrainId = ""
+				t.Train_type = ""
+				t.TrainDetail = ""
+				t.Carriage_number = []string{}
+				t.IsEmpty = true
+			} else {
+				t.Pk = info_cpy.Pk
+				t.TrainId = info_cpy.TrainId
+				t.Train_type = info_cpy.Train_type
+				t.TrainDetail = info_cpy.TrainDetail
+				t.IsEmpty = false
+			}
+			return nil
+
+		} else {
+			//pj
+			sql := "select * from \"linePJ\" where train_id = '" + train_id + "';"
+			err := psql.Init()
+			if err != nil {
+				e := &Error{Code: "0008", Msg: "PostgreSQL initialize error", Verbose: err}
+				return e
+			}
+			db := psql.GetDB()
+			// 执行查询
+			res, err := db.Query(sql)
+			if err != nil {
+				e := &Error{Code: "0009", Msg: "SQL Query error", Verbose: err}
+				return e
+			}
+			defer res.Close()
+			defer db.Close()
+			//fmt.Printf("pk\ttrain_id\ttrain_type\ttrain_detail\n")
+			info_cpy := TrainInfo{}
+			for res.Next() {
+				err := res.Scan(&info_cpy.Pk, &info_cpy.TrainId, &info_cpy.Train_type, &info_cpy.TrainDetail)
+				if err != nil {
+					e := &Error{Code: "0010", Msg: "Scan data from psql goes wrong", Verbose: err}
+					return e
+				}
+			}
+			//judge the target info_cpy whether exist
+			if info_cpy.TrainId == "" {
+				t.Pk = 0
+				t.TrainId = ""
+				t.Carriage_number = []string{}
+				t.Train_type = ""
+				t.TrainDetail = ""
+				t.IsEmpty = true
+			} else {
+				t.Pk = info_cpy.Pk
+				t.TrainId = info_cpy.TrainId
+				t.Train_type = info_cpy.Train_type
+				t.TrainDetail = info_cpy.TrainDetail
+				t.IsEmpty = false
+			}
+			return nil
 		}
-		return nil
+
+	} else if len(train_id) == 6 {
+		line := strings.ToLower(string(train_id[:2]))
+		switch line {
+		case "sj":
+			{
+				sql := "select * from \"lineSJ01\" where train_id = '" + train_id + "';"
+				err := psql.Init()
+				if err != nil {
+					e := &Error{Code: "0008", Msg: "PostgreSQL initialize error", Verbose: err}
+					return e
+				}
+				db := psql.GetDB()
+				// 执行查询
+				res, err := db.Query(sql)
+				if err != nil {
+					e := &Error{Code: "0009", Msg: "SQL Query error", Verbose: err}
+					return e
+				}
+				defer res.Close()
+				defer db.Close()
+				//fmt.Printf("pk\ttrain_id\ttrain_type\ttrain_detail\n")
+				info_cpy := TrainInfo{}
+				for res.Next() {
+					err := res.Scan(&info_cpy.Pk, &info_cpy.TrainId, &info_cpy.Train_type, &info_cpy.TrainDetail)
+					if err != nil {
+						e := &Error{Code: "0010", Msg: "Scan data from psql goes wrong", Verbose: err}
+						return e
+					}
+				}
+				//judge the target info_cpy whether exist
+				if info_cpy.TrainId == "" {
+					t.Pk = 0
+					t.TrainId = ""
+					t.Train_type = ""
+					t.TrainDetail = ""
+					t.Carriage_number = []string{}
+					t.IsEmpty = true
+				} else {
+					t.Pk = info_cpy.Pk
+					t.TrainId = info_cpy.TrainId
+					t.Train_type = info_cpy.Train_type
+					t.TrainDetail = info_cpy.TrainDetail
+					t.IsEmpty = false
+				}
+				return nil
+			}
+		case "jy":
+			{
+				sql := "select * from \"lineJY01\" where train_id = '" + train_id + "';"
+				err := psql.Init()
+				if err != nil {
+					e := &Error{Code: "0008", Msg: "PostgreSQL initialize error", Verbose: err}
+					return e
+				}
+				db := psql.GetDB()
+				// 执行查询
+				res, err := db.Query(sql)
+				if err != nil {
+					e := &Error{Code: "0009", Msg: "SQL Query error", Verbose: err}
+					return e
+				}
+				defer res.Close()
+				defer db.Close()
+				//fmt.Printf("pk\ttrain_id\ttrain_type\ttrain_detail\n")
+				info_cpy := TrainInfo{}
+				for res.Next() {
+					err := res.Scan(&info_cpy.Pk, &info_cpy.TrainId, &info_cpy.Train_type, &info_cpy.TrainDetail)
+					if err != nil {
+						e := &Error{Code: "0010", Msg: "Scan data from psql goes wrong", Verbose: err}
+						return e
+					}
+				}
+				//judge the target info_cpy whether exist
+				if info_cpy.TrainId == "" {
+					t.Pk = 0
+					t.TrainId = ""
+					t.Train_type = ""
+					t.TrainDetail = ""
+					t.Carriage_number = []string{}
+					t.IsEmpty = true
+				} else {
+					t.Pk = info_cpy.Pk
+					t.TrainId = info_cpy.TrainId
+					t.Train_type = info_cpy.Train_type
+					t.TrainDetail = info_cpy.TrainDetail
+					t.IsEmpty = false
+				}
+				return nil
+			}
+		case "jc":
+			{
+				sql := "select * from \"lineJC\" where train_id = '" + train_id + "';"
+				err := psql.Init()
+				if err != nil {
+					e := &Error{Code: "0008", Msg: "PostgreSQL initialize error", Verbose: err}
+					return e
+				}
+				db := psql.GetDB()
+				// 执行查询
+				res, err := db.Query(sql)
+				if err != nil {
+					e := &Error{Code: "0009", Msg: "SQL Query error", Verbose: err}
+					return e
+				}
+				defer res.Close()
+				defer db.Close()
+				//fmt.Printf("pk\ttrain_id\ttrain_type\ttrain_detail\n")
+				info_cpy := TrainInfo{}
+				for res.Next() {
+					err := res.Scan(&info_cpy.Pk, &info_cpy.TrainId, &info_cpy.Train_type, &info_cpy.TrainDetail)
+					if err != nil {
+						e := &Error{Code: "0010", Msg: "Scan data from psql goes wrong", Verbose: err}
+						return e
+					}
+				}
+				//judge the target info_cpy whether exist
+				if info_cpy.TrainId == "" {
+					t.Pk = 0
+					t.TrainId = ""
+					t.Train_type = ""
+					t.TrainDetail = ""
+					t.Carriage_number = []string{}
+					t.IsEmpty = true
+				} else {
+					t.Pk = info_cpy.Pk
+					t.TrainId = info_cpy.TrainId
+					t.Train_type = info_cpy.Train_type
+					t.TrainDetail = info_cpy.TrainDetail
+					t.IsEmpty = false
+				}
+				return nil
+			}
+		default:
+			{
+				t.Pk = 0
+				t.TrainId = ""
+				t.Train_type = ""
+				t.TrainDetail = ""
+				t.Carriage_number = []string{}
+				t.IsEmpty = true
+				return &Error{Code: "0035", Msg: "Unknown type train id"}
+			}
+		}
+
 	} else {
 		e := &Error{Code: "0011", Msg: "Invalid input train_id"}
 		return e
@@ -2247,10 +2596,16 @@ func QueryCarriage(line string, number string, t *TrainInfo) *Error {
 		all_carriage := ""
 		correct_carriage := ""
 		err := res.Scan(&correct_carriage, &t.TrainId, &t.Carriage_index, &all_carriage)
+
 		t.Carriage_number = strings.Split(all_carriage, ",")
 		if err != nil {
 			e := &Error{Code: "0017", Msg: "Scan data from psql goes wrong", Verbose: err}
 			return e
+		}
+		if correct_carriage == number {
+			t.IsInputCarriageCorrect = true
+		} else {
+			t.IsInputCarriageCorrect = false
 		}
 	}
 	return nil
