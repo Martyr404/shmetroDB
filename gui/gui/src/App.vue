@@ -112,7 +112,6 @@ async function handleSearch() {
           <div v-if="train.IsInputCarriageCorrect === false" class="error" style="margin-bottom:10px;">
             输入车厢号有误，正确应该为
             <strong>
-              <!-- 安全地获取正确车厢号：优先使用 Carriage_number[Carriage_index] -->
               {{
                 (() => {
                   const arr = Array.isArray(train.Carriage_number) ? train.Carriage_number : null;
@@ -177,6 +176,18 @@ async function handleSearch() {
 
     <!-- 错误提示 -->
     <div class="error" v-if="error && !loading">{{ error }}</div>
+    <footer class="footer">
+      <p>
+        发现 Bug 或有改进建议？请前往
+        <a
+          href="https://github.com/Martyr404/shmetroDB/issues"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub Issues
+        </a>
+      </p>
+    </footer>
   </div>
 </template>
 
@@ -348,6 +359,44 @@ button:disabled {
   font-size: 0.96rem;
   text-align: left;
 }
+.footer {
+  margin-top: 48px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  font-size: 0.92rem;
+  color: #666;
+  text-align: center;
+  line-height: 1.8;
+  user-select: none;
+}
+
+.footer a {
+  color: #409eff;
+  font-weight: 600;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.25s ease, text-shadow 0.25s ease;
+}
+
+.footer a::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: linear-gradient(90deg, #4e9fff, #6b66ff);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+
+.footer a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
 
 /* 响应式：手机端 */
 @media (max-width: 600px) {
