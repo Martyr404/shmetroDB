@@ -97,11 +97,20 @@ func (s Server) Init() {
 					}
 				}
 			}
-			c.JSON(http.StatusAccepted, gin.H{
-				"StateCode": "2000",
-				"Msg":       "Query carriage number:" + req.Carriage_number + " successfully",
-				"Data":      json_data,
-			})
+			if len(json_data) == 0 {
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"StateCode": "5001",
+					"Msg":       "parse carriage number goes wrong",
+					//方便debug用，实际上线用""替换Err
+					"Data": Err,
+				})
+			} else {
+				c.JSON(http.StatusAccepted, gin.H{
+					"StateCode": "2000",
+					"Msg":       "Query carriage number:" + req.Carriage_number + " successfully",
+					"Data":      json_data,
+				})
+			}
 		}
 
 	})
