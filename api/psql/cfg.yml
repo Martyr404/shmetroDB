@@ -1,6 +1,1 @@
-host: "81.68.237.196"    # 远程PostgreSQL主机地址
-port: 9989                    # 端口，默认5432
-user: "pq1x"         # 数据库用户名
-password: "n#llo3t4"     # 数据库密码
-dbname: "pq1x"         # 要连接的数据库名
-sslmode: "disable"            # SSL模式（根据服务器配置选择，如"disable"关闭SSL）
+
