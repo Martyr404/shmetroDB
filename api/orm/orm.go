@@ -2351,7 +2351,7 @@ func FormatCarriageNumbers(id int, line string, isAnda bool) ([]string, *Error) 
 
 // 验证车厢号的合法性，支持大小写混合
 func ValidateCarriageNumbers(number string) bool {
-	pattern := `(?i)^(?:\d{5}|\d{6}|T\d{6}|JC\d{5}|SJ\d{6}|JY\d{6})$`
+	pattern := `(?i)^(?:\d{5}|\d{6}|T01\d{4}|JC4\d{4}|JC8\d{4}|SJ\d{6}|JY01\d{4})$`
 	matched, _ := regexp.MatchString(pattern, number)
 	return matched
 }

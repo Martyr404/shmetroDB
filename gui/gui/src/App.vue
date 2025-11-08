@@ -7,8 +7,8 @@ const result = ref<any | null>(null)
 const error = ref<string | null>(null)
 
 function validateInput(val: string) {
-  // 只允许数字和TJC字母，长度不超过6
-  return /^[0-9TJCYtjcy]{0,6}$/.test(val)
+  const pattern = /^(?:\d{5,6}|T01\d{4}|JC[48]\d{4}|JY01\d{4}|SJ01\d{4})$/i
+  return pattern.test(val)
 }
 
 function onInput(e: Event) {
