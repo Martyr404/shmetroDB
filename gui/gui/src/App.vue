@@ -249,66 +249,43 @@ input[type="text"]:focus {
 }
 
 button {
-  position: relative;
-  padding: 10px 26px;
-  background: linear-gradient(135deg, #4e9fff 0%, #6b66ff 100%);
-  color: #ffffff;
+  background-color: transparent;
+  border: 2px solid #409eff;
+  color: #409eff;
   font-size: 1rem;
   font-weight: 600;
-  border: none;
-  border-radius: 10px;
-  letter-spacing: 0.3px;
+  padding: 10px 24px;
+  border-radius: 8px;
   cursor: pointer;
-  box-shadow:
-    0 4px 15px rgba(90, 130, 255, 0.3),
-    0 1px 2px rgba(255, 255, 255, 0.2) inset;
   transition: all 0.25s ease;
-  backdrop-filter: blur(6px);
-  overflow: hidden;
+  outline: none;
+  letter-spacing: 0.5px;
 }
 
-button::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(120deg, #00b7ff, #7b5cff, #00b7ff);
-  background-size: 200% 200%;
-  opacity: 0;
-  transition: opacity 0.3s, background-position 0.8s;
-  border-radius: inherit;
-  z-index: 0;
-}
-
-button:hover::before {
-  opacity: 1;
-  background-position: 100% 0;
-}
-
-button span {
-  position: relative;
-  z-index: 1;
-}
 
 button:hover {
+  background-color: #8fc5fb;
+  border: 2px solid#8fc5fb;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(64, 158, 255, 0.25);
   transform: translateY(-2px);
-  box-shadow:
-    0 6px 18px rgba(90, 130, 255, 0.4),
-    0 2px 4px rgba(255, 255, 255, 0.3) inset;
 }
 
+
 button:active {
-  transform: scale(0.97);
-  box-shadow:
-    0 3px 10px rgba(90, 130, 255, 0.25),
-    0 1px 3px rgba(255, 255, 255, 0.25) inset;
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(64, 158, 255, 0.2);
 }
 
 button:disabled {
-  background: #cbd5e1;
-  color: #f0f4f9;
+  border-color: #cfd9e0;
+  color: #cfd9e0;
+  background-color: transparent;
   cursor: not-allowed;
   box-shadow: none;
 }
+
+
 
 
 
