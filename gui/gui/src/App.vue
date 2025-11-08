@@ -12,19 +12,35 @@ function validateInput(val: string) {
 }
 
 function onInput(e: Event) {
-  const val = (e.target as HTMLInputElement).value
-  const filtered = val.replace(/[^0-9TJCtjc]/g, '').slice(0, 6)
-  searchValue.value = filtered
-  if (!validateInput(filtered)) {
-    error.value = '只能输入最多6位数字或T/J/C字母，不能包含特殊字符'
-  } else {
-    error.value = null
-  }
+  let val = (e.target as HTMLInputElement).value
+
+  
+  val = val.replace(/[^a-zA-Z0-9]/g, '')
+
+  
+  val = val.toUpperCase()
+
+  
+  val = val.slice(0, 8)
+
+  searchValue.value = val
+
+  
+  error.value = null
 }
 
+
 async function handleSearch() {
-  if (!searchValue.value.trim()) {
+  const val = searchValue.value.trim()
+
+  if (!val) {
     error.value = '请输入车厢号'
+    result.value = null
+    return
+  }
+
+  if (!validateInput(val)) {
+    error.value = '输入格式不正确，请检查车厢号'
     result.value = null
     return
   }
@@ -34,42 +50,34 @@ async function handleSearch() {
   loading.value = true
 
   try {
-    const res = await fetch('http://127.0.0.1:9987/api/calculate', {
+    const res = await fetch('http://81.68.237.196:9988/api/calculate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ carriage_number: searchValue.value.trim() }),
+      body: JSON.stringify({ carriage_number: val }),
     })
 
     if (!res.ok) throw new Error('查询失败')
 
     const data = await res.json()
 
-    // === 统一处理返回结构 ===
     if (data.StateCode === '2000') {
-      // 情况1: 正常返回 Data 为数组
       if (Array.isArray(data.Data) && data.Data.length > 0) {
         result.value = data.Data
-      }
-      // 情况2: Data为空数组
-      else if (Array.isArray(data.Data) && data.Data.length === 0) {
+      } else if (Array.isArray(data.Data) && data.Data.length === 0) {
         result.value = null
         error.value = data.Msg || '未找到相关车厢'
-      }
-      else {
+      } else {
         result.value = null
         error.value = data.Msg || '返回数据格式不正确'
       }
-    } 
-    else if (data.StateCode === '5000') {
-      // 情况3: 错误输入
+    } else if (data.StateCode === '5000') {
       result.value = null
       if (data.Data && data.Data.Msg) {
         error.value = data.Data.Msg
       } else {
         error.value = data.Msg || '服务器处理错误'
       }
-    } 
-    else {
+    } else {
       result.value = null
       error.value = data.Msg || '未知错误'
     }
@@ -82,6 +90,7 @@ async function handleSearch() {
 </script>
 
 
+
 <template>
   <div class="container">
     <h1>上海地铁车厢号数据库</h1>
@@ -90,7 +99,7 @@ async function handleSearch() {
       <input
         v-model="searchValue"
         type="text"
-        maxlength="6"
+        maxlength="8"
         placeholder="请输入车厢号"
         @input="onInput"
         @keyup.enter="handleSearch"
