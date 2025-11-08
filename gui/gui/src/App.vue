@@ -126,7 +126,7 @@ async function handleSearch() {
             </strong>
           </div>
 
-          <div>🚆 列车ID：<strong>{{ train.TrainId }}</strong></div>
+          <div>车号：<strong>{{ train.TrainId }}</strong></div>
           <div>车型代码：<strong>{{ train.Train_type }}</strong></div>
           <div>车厢数量：<strong>{{ Array.isArray(train.Carriage_number) ? train.Carriage_number.length : '未知' }}</strong></div>
           <div>关于该列车：{{ train.TrainDetail || '暂无信息' }}</div>
@@ -161,7 +161,7 @@ async function handleSearch() {
             </strong>
           </div>
 
-          <div>🚆 列车ID：<strong>{{ result.TrainId }}</strong></div>
+          <div>车号：<strong>{{ result.TrainId }}</strong></div>
           <div>车型代码：<strong>{{ result.Train_type }}</strong></div>
           <div>关于该列车：{{ result.TrainDetail || '暂无信息' }}</div>
           <div style="margin-top:8px;">

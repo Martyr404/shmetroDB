@@ -98,9 +98,9 @@ func (s Server) Init() {
 				}
 			}
 			if len(json_data) == 0 {
-				c.JSON(http.StatusInternalServerError, gin.H{
-					"StateCode": "5001",
-					"Msg":       "parse carriage number goes wrong",
+				c.JSON(http.StatusBadRequest, gin.H{
+					"StateCode": "4001",
+					"Msg":       "invalid carriage_number",
 					//方便debug用，实际上线用""替换Err
 					"Data": Err,
 				})
