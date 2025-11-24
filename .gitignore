@@ -37,3 +37,4 @@ coverage
 *.tsbuildinfo
 api/psql/cfg.yml
 
+api/psql/cfg.yml

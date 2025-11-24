@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import Tips from './components/tips.vue'
 
 const searchValue = ref('')
+const isEmpty = ref(true)
 const loading = ref(false)
 const result = ref<any | null>(null)
 const error = ref<string | null>(null)
@@ -22,8 +24,6 @@ function onInput(e: Event) {
 
   
   val = val.slice(0, 8)
-
-  searchValue.value = val
 
   
   error.value = null
@@ -107,6 +107,9 @@ async function handleSearch() {
       />
       <button :disabled="loading" @click="handleSearch"><span>Go!</span></button>
     </div>
+    <transition name="tips-fade">
+      <Tips v-if="!searchValue" />
+    </transition>
 
     <!-- Loading / 结果区 -->
     <div class="result" v-if="loading || result">
@@ -160,7 +163,7 @@ async function handleSearch() {
             输入车厢号有误，正确应该为
             <strong>
               {{
-                (() => {
+                 (() => {
                   const arr = Array.isArray(result.Carriage_number) ? result.Carriage_number : null;
                   const idxNum = Number(result.Carriage_index);
                   if (arr && Number.isFinite(idxNum) && arr[idxNum] !== undefined) return arr[idxNum];
@@ -406,6 +409,24 @@ button:disabled {
   .train-item {
     font-size: 0.9rem;
   }
+}
+
+/* tip进入和离开都使用过渡 */
+.tips-fade-enter-active,
+.tips-fade-leave-active {
+  transition: opacity 0.35s ease;
+}
+
+/* tip初始状态：透明 */
+.tips-fade-enter-from,
+.tips-fade-leave-to {
+  opacity: 0;
+}
+
+/* tip完整显示 */
+.tips-fade-enter-to,
+.tips-fade-leave-from {
+  opacity: 1;
 }
 </style>
 
