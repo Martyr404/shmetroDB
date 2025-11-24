@@ -50,7 +50,7 @@ async function handleSearch() {
   loading.value = true
 
   try {
-    const res = await fetch('http://81.68.237.196:9988/api/calculate', {
+    const res = await fetch('https://<dns(not ip)>:port/api/calculate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ carriage_number: val }),
