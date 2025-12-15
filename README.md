@@ -36,8 +36,6 @@ cd shmetroDB
 ```bash
 cd ./api
 go mod tidy
-# （可选）设置运行模式为 release
-# export GIN_MODE=release
 go run main.go
 ```
 
@@ -45,9 +43,8 @@ go run main.go
 
 ```bash
 cd ./gui/gui
-docker run -it -p 5173:5173 -v "$(pwd)":/gui -w /gui node:24-alpine sh -c "npm install -g pnpm && sh"
-pnpm install
-pnpm dev --host
+docker build -t shmetrodb-gui .
+docker run --name shmetroDB-gui -p 10011:10011
 ```
 
 
